@@ -1,6 +1,31 @@
+<mat-toolbar class="toolbar-container" color="primary">
+  <button mat-icon-button (click)="opened = !opened">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>littlePaws</span>
+  <!-- <span></span> -->
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Login/Sign-up</button>
+    <!-- <button mat-menu-item>Sign-up</button> -->
+  </mat-menu>
+</mat-toolbar>
+
 <mat-sidenav-container>
-  <mat-sidenav mode="over" [(opened)]="opened"> Sidenav </mat-sidenav>
-  <mat-sidenav-content>
-    Main<button (click)="opened = !opened">toggle</button></mat-sidenav-content
-  >
+  <mat-sidenav role="navigation" mode="over" [(opened)]="opened">
+    <ul>
+      <li>Home</li>
+      <li>about</li>
+      <li>contact us</li>
+    </ul>
+  </mat-sidenav>
+  <mat-sidenav-content role="main" class="sidenav-content-container">
+    <div class="side-nav-content-container">
+      some content
+
+      <app-footer></app-footer>
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>

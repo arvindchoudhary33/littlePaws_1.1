@@ -1,3 +1,4 @@
+@use "../../_colors.scss" as v;
 .footer-main-container {
   position: absolute;
   bottom: 0;
@@ -5,6 +6,21 @@
   left: 0;
   display: flex;
   justify-content: center;
-  background-color: bisque;
   padding: 10px;
+  background-color: map-get(v.$green-palette, 700);
+  color: v.$light-primary-text;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+
+  ul {
+    list-style: none;
+  }
+
+  li {
+    margin-top: 5px;
+  }
+  span {
+    margin-top: 50px;
+  }
 }

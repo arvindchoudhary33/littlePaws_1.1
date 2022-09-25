@@ -1,0 +1,28 @@
+@use "@angular/material" as mat;
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif&family=Source+Sans+Pro&family=Ubuntu&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif&family=Ubuntu&display=swap");
+@include mat.core();
+$my-primary: mat.define-palette(mat.$orange-palette, 500);
+$my-accent: mat.define-palette(mat.$blue-grey-palette, A200, A100, A400);
+
+$my-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+    ),
+  )
+);
+/* @include mat.core-theme($my-theme); */
+@include mat.all-component-themes($my-theme);
+/* @include mat.button-theme($my-theme); */
+
+/* $custom-typography: mat-typography-config(
+  $font-family: '"Source Sans Pro", sans-serif',
+);
+@include mat.core($custom-typography); */
+
+.mat-raised-button {
+  color: white !important;
+}
