@@ -3,14 +3,17 @@
 
 .nav-bar-main-container {
 }
+
 .toolbar-container {
   display: flex;
   justify-content: space-between;
-  color: whitesmoke;
+  background: white;
+  color: map-get(v.$blue-palette, 300);
+  border-bottom: 1px solid LightGray;
 }
 mat-sidenav-container {
   width: 100%;
-  height: 93%;
+  height: 91%;
   font-family: v.$font-family;
 }
 mat-sidenav,
@@ -34,7 +37,7 @@ mat-sidenav {
     cursor: pointer;
   }
   li:hover {
-    background: v.$orange_100;
+    background: map-get(v.$blue-palette, 100);
   }
 }
 
@@ -46,6 +49,10 @@ mat-sidenav {
   background: white;
   padding: 10px;
   min-height: 100vh;
-  height: fit-content;
+  height: 1000px;
   overflow: hidden;
+}
+
+.login-signup-button:hover {
+  background: map-get(v.$blue-palette, 100);
 }

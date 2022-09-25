@@ -1,14 +1,16 @@
-<mat-toolbar class="toolbar-container" color="primary">
+<mat-toolbar class="toolbar-container" style="background: white">
   <button mat-icon-button (click)="opened = !opened">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>littlePaws</span>
+  <span style="font-family: Ubuntu"
+    >little<span style="color: black">Paws</span></span
+  >
   <!-- <span></span> -->
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>Login/Sign-up</button>
+    <button class="login-signup-button" mat-menu-item>Login/Sign-up</button>
     <!-- <button mat-menu-item>Sign-up</button> -->
   </mat-menu>
 </mat-toolbar>
