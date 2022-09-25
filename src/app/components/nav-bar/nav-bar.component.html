@@ -18,10 +18,20 @@
 <mat-sidenav-container>
   <mat-sidenav role="navigation" mode="over" [(opened)]="opened">
     <ul>
-      <a routerLink="/home"><li (click)="opened = !opened">Home</li></a>
-      <a routerLink="/about-us"><li (click)="opened = !opened">About us</li></a>
+      <a routerLink="/home"
+        ><li (click)="opened = !opened">
+          <fa-icon [icon]="faHouseChimneyWindow"></fa-icon>Home
+        </li></a
+      >
+      <a routerLink="/about-us"
+        ><li (click)="opened = !opened">
+          <fa-icon [icon]="faUsers"></fa-icon>About us
+        </li></a
+      >
       <a routerLink="/contact-us"
-        ><li (click)="opened = !opened">Contact</li></a
+        ><li (click)="opened = !opened">
+          <fa-icon [icon]="faPhone"></fa-icon>Contact
+        </li></a
       >
     </ul>
   </mat-sidenav>
