@@ -18,14 +18,16 @@
 <mat-sidenav-container>
   <mat-sidenav role="navigation" mode="over" [(opened)]="opened">
     <ul>
-      <li>Home</li>
-      <li>about</li>
-      <li>contact us</li>
+      <a routerLink="/home"><li (click)="opened = !opened">Home</li></a>
+      <a routerLink="/about-us"><li (click)="opened = !opened">About us</li></a>
+      <a routerLink="/contact-us"
+        ><li (click)="opened = !opened">Contact</li></a
+      >
     </ul>
   </mat-sidenav>
   <mat-sidenav-content role="main" class="sidenav-content-container">
     <div class="side-nav-content-container">
-      some content
+      <router-outlet></router-outlet>
 
       <app-footer></app-footer>
     </div>

@@ -33,7 +33,7 @@ mat-sidenav {
   li {
     padding: 20px;
     gap: 5px;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     cursor: pointer;
   }
   li:hover {
@@ -49,7 +49,7 @@ mat-sidenav {
   background: white;
   padding: 10px;
   min-height: 100vh;
-  height: 1000px;
+  height: fit-content;
   overflow: hidden;
 }
 
