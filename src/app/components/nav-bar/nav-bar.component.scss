@@ -5,30 +5,48 @@
 }
 
 .toolbar-container {
+  position: fixed;
+  top: 0;
   display: flex;
   justify-content: space-between;
   background: white;
   color: map-get(v.$blue-palette, 300);
   border-bottom: 1px solid LightGray;
+  z-index: 999;
+}
+mat-drawer-backdrop {
+  /* padding-top: 50px; */
 }
 /* removes annoying focus on hamburger icon after clicking on any of the page link */
 ::ng-deep .mat-button-focus-overlay {
   display: none;
 }
 mat-sidenav-container {
+  margin-top: 64px;
   width: 100%;
-  height: 92.5%;
+  height: 100%;
   font-family: v.$font-family;
 }
 mat-sidenav,
 mat-sidenav-content {
   /* padding: 16px; */
 }
+::ng-deep .mat-button-focus-overlay {
+  background-color: whitesmoke !important;
+}
 
+.mat-drawer:not(.mat-drawer-side) {
+  position: fixed;
+}
+
+.mat-drawer-backdrop {
+  position: fixed !important;
+}
 mat-sidenav {
   width: 200px;
   color: v.$dark-secondary-text;
   background-color: White;
+  height: 100%;
   ul {
     list-style: none;
     margin: 0;
