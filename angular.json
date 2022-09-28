@@ -97,6 +97,7 @@
       }
     }
   },
+  "defaultProject": "littlePaws_1.1",
   "cli": {
     "analytics": false
   }
