@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-import { FooterComponent } from './components/footer/footer.component'
+import { FooterComponent } from './components/footer/footer.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,8 +15,22 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HomeComponent } from './components/home/home.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
+import { FaqComponent } from './components/faq/faq.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
-  declarations: [AppComponent, NavBarComponent, FooterComponent, HomeComponent, AboutUsComponent, ContactUsComponent],
+  declarations: [
+    AppComponent,
+    NavBarComponent,
+    FooterComponent,
+    HomeComponent,
+    AboutUsComponent,
+    ContactUsComponent,
+    FaqComponent,
+    LoginComponent,
+    SignUpComponent,
+  ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -28,7 +42,8 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
-    FontAwesomeModule
+    MatInputModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

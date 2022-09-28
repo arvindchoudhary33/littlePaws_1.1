@@ -4,6 +4,9 @@ import {
   faUsers,
   faHouseChimneyWindow,
   faPhone,
+  faQuestion,
+  faQ,
+  faCircleQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -15,7 +18,9 @@ export class NavBarComponent implements OnInit {
   faUsers = faUsers;
   faHouseChimneyWindow = faHouseChimneyWindow;
   faPhone = faPhone;
+  faQuestion = faCircleQuestion;
   opened = false;
+
   constructor() { }
 
   ngOnInit(): void { }
