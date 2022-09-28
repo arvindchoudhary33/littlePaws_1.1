@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faBuilding } from '@fortawesome/free-regular-svg-icons';
-import { faUser faMobileRetro } from '@fortawesome/free-solid-svg-icons';
+import { faMobileRetro } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -11,8 +11,8 @@ export class FooterComponent implements OnInit {
   faGithub = faGithub;
   faEnvelope = faEnvelope;
   faBuilding = faBuilding;
-  faMobileRetro = faMobileRetro
-  constructor() { }
+  faMobileRetro = faMobileRetro;
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }
