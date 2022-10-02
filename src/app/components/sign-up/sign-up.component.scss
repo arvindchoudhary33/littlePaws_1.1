@@ -1,0 +1,65 @@
+@use "../../../colors" as v;
+.close-button {
+  position: relative;
+  /* left: 93%; */
+  top: -10px;
+  color: darkgray;
+}
+::ng-deep .custom {
+  .mat-dialog-container {
+    padding: 15px;
+  }
+  .mat-tab-label-content {
+    font-size: 1.2em;
+    font-family: "Ubuntu";
+  }
+  .mat-tab-header {
+    border-bottom: none !important;
+  }
+  .mat-tab-labels {
+    border-radius: 30px;
+    border: 1px solid lightGray;
+    overflow: hidden;
+  }
+  .mat-ink-bar {
+    display: none;
+  }
+  .mat-tab-label-active {
+    background: map-get(v.$blue-palette, 700);
+    color: white;
+    opacity: 1 !important;
+  }
+  .mat-tab-body-content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    height: fit-content;
+  }
+}
+
+.sign-up-container {
+}
+.sign-up-form {
+  display: flex;
+  flex-direction: column;
+}
+.sign-up-terms {
+  font-family: "Ubuntu";
+  text-align: right;
+  color: map-get(v.$blue-grey-palette, 700);
+  font-weight: 100;
+  padding: 10px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 550px) {
+  ::ng-deep .custom .mat-tab-body-content {
+    min-width: 85vw;
+  }
+}
+@media only screen and (min-width: 550px) {
+  ::ng-deep .custom .mat-tab-body-content {
+    min-width: 400px;
+  }
+}

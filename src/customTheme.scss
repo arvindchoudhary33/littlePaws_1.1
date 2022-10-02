@@ -1,3 +1,4 @@
+@use "colors" as v;
 @use "@angular/material" as mat;
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif&family=Source+Sans+Pro&family=Ubuntu&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
@@ -26,4 +27,11 @@ $my-theme: mat.define-light-theme(
 
 .mat-raised-button {
   color: white !important;
+  padding: 4px !important;
+  font-family: "Ubuntu";
+}
+
+/* on hover outline color for all mat inputs */
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: map-get(v.$blue-palette, 100);
 }
