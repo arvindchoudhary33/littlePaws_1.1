@@ -7,10 +7,15 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit {
+  minPassLength = 8;
   constructor() { }
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
+  ]);
+  passwordFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(this.minPassLength),
   ]);
 
   ngOnInit(): void { }

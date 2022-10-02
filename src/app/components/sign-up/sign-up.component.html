@@ -39,9 +39,27 @@
 
           <mat-form-field appearance="outline">
             <mat-label>password</mat-label>
-            <input matInput required />
+            <input
+              matInput
+              required
+              [formControl]="passwordFormControl"
+              type="password"
+            />
+            <mat-error *ngIf="passwordFormControl.hasError('required')"
+              >Password is required</mat-error
+            >
+            <mat-error *ngIf="passwordFormControl.hasError('minlength')"
+              >Password must have at least
+              {{ minPassLength }} characters</mat-error
+            >
           </mat-form-field>
-          <button mat-raised-button color="primary">SIGN-UP</button>
+          <button
+            mat-raised-button
+            class="mat-raised-green-button"
+            style="margin-top: 10px"
+          >
+            SIGN-UP
+          </button>
           <span class="sign-up-terms">Terms and conditions</span>
         </form>
       </div>
