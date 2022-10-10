@@ -10,10 +10,9 @@
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button class="login-signup-button" mat-menu-item (click)="openDialog()">
-      Login/Sign-up
+    <button class="login-signup-button" mat-menu-item>
+      <a routerLink="/sign-up">Sign-up/Login</a>
     </button>
-    <!-- <button mat-menu-item>Sign-up</button> -->
   </mat-menu>
 </mat-toolbar>
 
@@ -54,7 +53,6 @@
   <mat-sidenav-content role="main" class="sidenav-content-container">
     <div class="side-nav-content-container">
       <router-outlet></router-outlet>
-
       <app-footer></app-footer>
     </div>
   </mat-sidenav-content>

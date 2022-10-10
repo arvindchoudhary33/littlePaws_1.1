@@ -1,13 +1,6 @@
 @use "../../../colors" as v;
-.close-button {
-  position: relative;
-  /* left: 93%; */
-  top: -10px;
-  color: darkgray;
-}
-::ng-deep .custom {
-  .mat-dialog-container {
-    padding: 15px;
+::ng-deep {
+  .mat-tab-group {
   }
   .mat-tab-label-content {
     font-size: 1.2em;
@@ -35,13 +28,28 @@
     margin-top: 20px;
     height: fit-content;
   }
+  .mat-tab-body {
+    height: fit-content;
+  }
 }
 
 .sign-up-container {
+  position: absolute;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+}
+
+.sign-up-sub-container {
+  position: relative;
+  top: 100px;
+  width: 400px;
 }
 .sign-up-form {
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 .sign-up-terms {
   font-family: "Ubuntu";

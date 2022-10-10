@@ -16,21 +16,16 @@ $my-theme: mat.define-light-theme(
     ),
   )
 );
-/* @include mat.core-theme($my-theme); */
+
 @include mat.all-component-themes($my-theme);
-/* @include mat.button-theme($my-theme); */
-
-/* $custom-typography: mat-typography-config(
-  $font-family: '"Source Sans Pro", sans-serif',
-);
-@include mat.core($custom-typography); */
-
 .mat-raised-button {
   color: white !important;
   padding: 4px !important;
   font-family: "Ubuntu";
 }
-
+/* .mat-raised-button.mat-button-disabled { */
+/*   opacity: 0.6; */
+/* } */
 /* on hover outline color for all mat inputs */
 .mat-form-field-appearance-outline .mat-form-field-outline-thick {
   color: map-get(v.$blue-palette, 100);
@@ -38,4 +33,9 @@ $my-theme: mat.define-light-theme(
 
 .mat-raised-green-button {
   background: map-get(v.$green-palette, 500);
+}
+
+.mat-raised-green-button.mat-button-disabled {
+  background: map-get(v.$green-palette, 500) !important;
+  opacity: 0.6;
 }
