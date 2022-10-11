@@ -12,7 +12,6 @@
         [formControl]="emailFormControl"
         formControlName="email"
         required
-        ngModel
       />
       <mat-error
         *ngIf="
@@ -35,7 +34,6 @@
         [formControl]="passwordFormControl"
         formControlName="password"
         type="password"
-        ngModel
       />
       <mat-error *ngIf="passwordFormControl.hasError('required')"
         >Password is required</mat-error
@@ -47,8 +45,11 @@
       style="margin-top: 10px"
       [disabled]="!loginFormGroup.valid"
     >
+      <mat-spinner *ngIf="isSpinnerLoading"></mat-spinner>
       LOGIN
     </button>
-    <span class="login-forgot-password">forgot password</span>
+    <span class="login-forgot-password"
+      ><a routerLink="/forgot-password">forgot password</a></span
+    >
   </form>
 </div>

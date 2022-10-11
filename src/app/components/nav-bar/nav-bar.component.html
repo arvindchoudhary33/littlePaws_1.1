@@ -1,5 +1,5 @@
 <mat-toolbar class="toolbar-container" style="background: white">
-  <button mat-icon-button (click)="opened = !opened">
+  <button mat-icon-button (click)="toggleSideNav()">
     <mat-icon>menu</mat-icon>
   </button>
   <span style="font-family: Ubuntu">
@@ -10,15 +10,25 @@
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button class="login-signup-button" mat-menu-item>
+    <button
+      class="login-signup-button"
+      mat-menu-item
+      *ngIf="isUserLoggedIn === false"
+    >
       <a routerLink="/sign-up">Sign-up/Login</a>
+    </button>
+    <button
+      class="login-signup-button"
+      mat-menu-item
+      *ngIf="isUserLoggedIn"
+      (click)="logout()"
+    >
+      logout
     </button>
   </mat-menu>
 </mat-toolbar>
 
-<mat-sidenav-container
-  [ngStyle]="{ position: sidenav.opened ? 'fixed' : 'relative' }"
->
+<mat-sidenav-container [ngStyle]="{ position: opened ? 'fixed' : 'relative' }">
   <mat-sidenav
     [style.marginTop.px]="64"
     fixedInViewport="true"
@@ -29,24 +39,31 @@
   >
     <ul>
       <a routerLink="/home"
-        ><li (click)="opened = !opened">
+        ><li (click)="toggleSideNav()">
           <fa-icon [icon]="faHouseChimneyWindow"></fa-icon>Home
         </li></a
       >
       <a routerLink="/about-us"
-        ><li (click)="opened = !opened">
+        ><li (click)="toggleSideNav()">
           <fa-icon [icon]="faUsers"></fa-icon>About us
         </li></a
       >
       <a routerLink="/contact-us"
-        ><li (click)="opened = !opened">
+        ><li (click)="toggleSideNav()">
           <fa-icon [icon]="faPhone"></fa-icon>Contact
         </li></a
       >
       <a routerLink="/faq">
-        <li (click)="opened = !opened">
+        <li (click)="toggleSideNav()">
           <fa-icon [icon]="faQuestion"></fa-icon>faq
         </li>
+      </a>
+      <a routerLink="/all-pets" *ngIf="displayRoutes">
+        <li (click)="toggleSideNav()">Adopt</li>
+      </a>
+
+      <a routerLink="/all-pets" *ngIf="displayRoutes">
+        <li (click)="toggleSideNav()">some page</li>
       </a>
     </ul>
   </mat-sidenav>

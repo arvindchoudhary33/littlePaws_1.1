@@ -12,7 +12,9 @@ export class SignUpComponent implements OnInit {
   // password: string = '';
   isDisabled: boolean = true;
   minPassLength = 8;
-  constructor(private auth: AuthService) { }
+
+  isSpinnerLoading: boolean = false;
+  constructor(private auth: AuthService) {}
 
   emailFormControl = new FormControl('', [
     Validators.required,
@@ -27,11 +29,10 @@ export class SignUpComponent implements OnInit {
     password: this.passwordFormControl,
   });
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
   register(signUpForm: any) {
-    // console.log(signUpForm);
     console.log('heyyy', signUpForm.email);
-
+    this.isSpinnerLoading = true;
     if (this.emailFormControl && this.passwordFormControl) {
       this.auth.register(signUpForm.email, signUpForm.password);
     }

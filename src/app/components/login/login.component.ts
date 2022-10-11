@@ -7,30 +7,29 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  // email: string = '';
-  // password: string = '';
   minPassLength = 8;
+  isSpinnerLoading: boolean = false;
   constructor(private auth: AuthService) { }
 
-  emailFormControl = new FormControl('', [
+  emailFormControl = new FormControl('xyz@gmail.com', [
     Validators.required,
     Validators.email,
   ]);
 
-  passwordFormControl = new FormControl('', [
+  passwordFormControl = new FormControl('xyzxyzxyz', [
     Validators.required,
     Validators.minLength(this.minPassLength),
   ]);
 
   loginFormGroup = new FormGroup({
     email: this.emailFormControl,
-    password: this.passwordFormControl
-  })
+    password: this.passwordFormControl,
+  });
   ngOnInit(): void { }
 
   login(loginFormGroup: any) {
     console.log('login', loginFormGroup.email);
-
+    this.isSpinnerLoading = true;
     if (this.emailFormControl && this.passwordFormControl) {
       this.auth.login(loginFormGroup.email, loginFormGroup.password);
     }

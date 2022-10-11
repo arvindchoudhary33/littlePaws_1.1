@@ -33,9 +33,28 @@ $my-theme: mat.define-light-theme(
 
 .mat-raised-green-button {
   background: map-get(v.$green-palette, 500);
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .mat-raised-green-button.mat-button-disabled {
   background: map-get(v.$green-palette, 500) !important;
   opacity: 0.6;
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-progress-spinner {
+  display: inline-block !important;
+  height: 30px !important;
+  width: 30px !important;
+  margin-right: 20px;
+}
+.mat-progress-spinner svg {
+  height: 30px !important;
+  width: 30px !important;
+}
+.mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: white !important;
 }

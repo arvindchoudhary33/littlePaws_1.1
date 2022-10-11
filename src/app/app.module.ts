@@ -26,6 +26,11 @@ import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { ChooseTypeComponent } from './components/choose-type/choose-type.component';
+import { AllPetsComponent } from './components/all-pets/all-pets.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { VerifyPasswordComponent } from './components/verify-password/verify-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +43,10 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     FaqComponent,
     LoginComponent,
     SignUpComponent,
+    ChooseTypeComponent,
+    AllPetsComponent,
+    VerifyPasswordComponent,
+    ForgotPasswordComponent,
   ],
   entryComponents: [SignUpComponent, LoginComponent],
   imports: [
@@ -56,6 +65,7 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     MatDialogModule,
     MatTabsModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore())

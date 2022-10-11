@@ -1,19 +1,6 @@
-<!-- <div -->
-<!--   mat-dialog-container -->
-<!--   style="overflow: hidden" -->
-<!--   class="dialog-main-container" -->
-<!-- > -->
-<!-- <button -->
-<!--   mat-icon-button -->
-<!--   aria-label="close dialog" -->
-<!--   mat-dialog-header -->
-<!--   class="close-button" -->
-<!-- > -->
-<!--   <mat-icon>close</mat-icon> -->
-<!-- </button> -->
 <div class="sign-up-container">
   <div class="sign-up-sub-container">
-    <mat-tab-group animationDuration="0ms" mat-stretch-tabs [selectedIndex]="0">
+    <mat-tab-group animationDuration="0ms" mat-stretch-tabs [selectedIndex]="1">
       <mat-tab label="sign-up">
         <div class="sign-up-content">
           <form
@@ -29,7 +16,6 @@
                 [formControl]="emailFormControl"
                 formControlName="email"
                 required
-                ngModel
               />
               <mat-error
                 *ngIf="
@@ -53,7 +39,6 @@
                 name="password"
                 formControlName="password"
                 [formControl]="passwordFormControl"
-                ngModel
               />
               <mat-error *ngIf="passwordFormControl.hasError('required')"
                 >Password is required</mat-error
@@ -69,7 +54,8 @@
               style="margin-top: 10px"
               [disabled]="!signUpFormGroup.valid"
             >
-              SIGN-UP
+              <mat-spinner *ngIf="isSpinnerLoading"></mat-spinner>
+              <span>SIGN-UP</span>
             </button>
             <span class="sign-up-terms">Terms and conditions</span>
           </form>

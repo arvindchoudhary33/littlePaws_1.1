@@ -6,15 +6,20 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private fireauth: AngularFireAuth, private router: Router) {}
+  constructor(private fireauth: AngularFireAuth, private router: Router) { }
 
   // Login method
   login(email: string, password: string) {
     this.fireauth.signInWithEmailAndPassword(email, password).then(
-      () => {
+      (res) => {
         localStorage.setItem('token', 'true');
         console.log('heeyy successful');
-        this.router.navigate(['home']);
+        if (res.user?.emailVerified == true) {
+          this.router.navigate(['/choose-type']);
+        }
+        else {
+          this.router.navigate(['/verify-email']);
+        }
       },
       (err) => {
         console.log('nooo', err.message);
@@ -27,9 +32,10 @@ export class AuthService {
 
   register(email: string, password: string) {
     this.fireauth.createUserWithEmailAndPassword(email, password).then(
-      () => {
-        alert('registered successfuly');
-        this.router.navigate(['/home']);
+      (res) => {
+        localStorage.setItem('token', 'true');
+        this.router.navigate(['/verify-email']);
+        this.sendEmailVerification(res.user);
       },
       (err) => {
         alert(err.message);
@@ -37,12 +43,20 @@ export class AuthService {
       }
     );
   }
-
+  isAuthenticated() {
+    const user = JSON.parse(localStorage.getItem('token')!);
+    if (user) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   // Sign out
   logout() {
     this.fireauth.signOut().then(
       () => {
         localStorage.removeItem('token');
+
         this.router.navigate(['/sign-up']);
       },
       (err) => {
@@ -51,4 +65,26 @@ export class AuthService {
       }
     );
   }
+
+  //Forgot password
+  forgotPassword(email: string) {
+    this.fireauth.sendPasswordResetEmail(email).then(
+      () => {
+        this.router.navigate(['/verify-email']);
+      },
+      (err) => {
+        alert(err.message);
+      }
+    );
+  }
+
+  // Email verification 
+  sendEmailVerification(user: any) {
+    user.sendEmailVerification().then((res: any) => {
+      this.router.navigate(['/verify-email']);
+    }, (err: any) => {
+      alert(err.message);
+    })
+  }
+
 }
