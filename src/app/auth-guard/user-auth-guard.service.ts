@@ -11,14 +11,17 @@ import {
   providedIn: 'root',
 })
 export class UserAuthGuardService {
-  constructor(private authService: AuthService, private router: Router) { }
+  isUserLoggedIn: boolean = false;
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.isLogged.subscribe((value) => { this.isUserLoggedIn = Boolean(value) });
+  }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | Promise<boolean> {
-    var isAuthenticated = this.authService.isAuthenticated();
-    if (!isAuthenticated) {
-      this.router.navigate(['/sign-up']);
-    } return isAuthenticated;
+    if (this.isUserLoggedIn) {
+      return true
+    }
+    return false;
   }
 }

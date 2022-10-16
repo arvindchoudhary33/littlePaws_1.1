@@ -20,27 +20,32 @@ export class NavBarComponent implements OnInit {
   faHouseChimneyWindow = faHouseChimneyWindow;
   faPhone = faPhone;
   faQuestion = faCircleQuestion;
-  isUserLoggedIn: boolean = false;
-  // :TODO change the var name to something more understandable
+  isUserLoggedIn: boolean = Boolean(localStorage.getItem('token'));
+  // :TODO change the var name to something more readable
   opened = false;
 
   displayRoutes: boolean = false;
   constructor(
     private userauth: AuthService,
-    location: Location,
+    // location: Location,
     router: Router
   ) {
-    router.events.subscribe((val) => {
-      if (location.path() == '/choose-type') {
-        console.log('router event');
-        this.isUserAuthenticated();
-      } else {
-      }
+    userauth.isLogged.subscribe((data) => {
+      this.isUserLoggedIn = Boolean(data);
     });
+
+    // router.events.subscribe((val) => {
+    //   if (location.path() == '/choose-type') {
+    //   } else {
+    //   }
+    // });
   }
 
   ngOnInit(): void {
-    this.isUserLoggedIn = this.userauth.isAuthenticated();
+    // subscribing to user logged in var to change the sign-in/ logout button at top right
+    this.userauth.isLogged.subscribe((isLogged) => {
+      this.isUserLoggedIn = Boolean(isLogged);
+    });
   }
 
   toggleSideNav() {
@@ -49,12 +54,5 @@ export class NavBarComponent implements OnInit {
 
   logout() {
     this.userauth.logout();
-  }
-  isUserAuthenticated() {
-    if (this.userauth.isAuthenticated()) {
-      this.displayRoutes = true;
-    } else {
-      this.displayRoutes = false;
-    }
   }
 }

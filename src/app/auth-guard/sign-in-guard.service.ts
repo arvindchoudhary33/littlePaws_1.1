@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import {
   ActivatedRouteSnapshot,
@@ -11,14 +11,30 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class SignInGuardService {
-  constructor(private authService: AuthService, private router: Router) { }
+export class SignInGuardService implements OnInit {
+  isUserLoggedIn: any;
+  token: any;
+  constructor(private authService: AuthService, private router: Router) {
+  }
+  ngOnInit() {
+    this.authService.isLogged.subscribe((value) => {
+      console.log("some", value)
+      this.isUserLoggedIn = Boolean(value);
+    });
+    this.token = localStorage.getItem('token')
+  }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/']); // or home
+
+    console.log('token', localStorage.getItem('token'));
+
+    console.log("sign-in service ", this.isUserLoggedIn);
+
+
+    if (this.token) {
+      this.router.navigate(['/home']); // or home
       return false;
     }
     return true;

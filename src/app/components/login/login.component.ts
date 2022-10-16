@@ -29,9 +29,12 @@ export class LoginComponent implements OnInit {
 
   login(loginFormGroup: any) {
     console.log('login', loginFormGroup.email);
-    this.isSpinnerLoading = true;
     if (this.emailFormControl && this.passwordFormControl) {
-      this.auth.login(loginFormGroup.email, loginFormGroup.password);
+      this.isSpinnerLoading = true;
+      this.auth.login(
+        loginFormGroup.email,
+        loginFormGroup.password
+      );
     }
   }
 }

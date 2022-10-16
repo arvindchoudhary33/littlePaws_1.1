@@ -1,6 +1,10 @@
 <div class="sign-up-container">
   <div class="sign-up-sub-container">
-    <mat-tab-group animationDuration="0ms" mat-stretch-tabs [selectedIndex]="1">
+    <mat-tab-group
+      animationDuration="0ms"
+      mat-stretch-tabs
+      [selectedIndex]="currentTab"
+    >
       <mat-tab label="sign-up">
         <div class="sign-up-content">
           <form
