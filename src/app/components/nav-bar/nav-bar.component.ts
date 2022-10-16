@@ -20,7 +20,9 @@ export class NavBarComponent implements OnInit {
   faHouseChimneyWindow = faHouseChimneyWindow;
   faPhone = faPhone;
   faQuestion = faCircleQuestion;
-  isUserLoggedIn: boolean = Boolean(localStorage.getItem('token'));
+  isUserLoggedIn: boolean = Boolean(
+    localStorage.getItem('token') && localStorage.getItem('isEmailVerified')
+  );
   // :TODO change the var name to something more readable
   opened = false;
 
@@ -32,6 +34,7 @@ export class NavBarComponent implements OnInit {
   ) {
     userauth.isLogged.subscribe((data) => {
       this.isUserLoggedIn = Boolean(data);
+      console.log("logged ", this.isUserLoggedIn)
     });
 
     // router.events.subscribe((val) => {

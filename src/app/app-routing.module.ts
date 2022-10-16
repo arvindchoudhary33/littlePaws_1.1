@@ -13,7 +13,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { VerifyPasswordComponent } from './components/verify-password/verify-password.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'HomeComponent', pathMatch: 'full' },
+  { path: '**', pathMatch: 'full', redirectTo: 'HomeComponent' },
   { path: 'home', component: HomeComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'contact-us', component: ContactUsComponent },

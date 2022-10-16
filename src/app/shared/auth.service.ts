@@ -8,11 +8,10 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class AuthService {
   isUserFullyAuthenticated: boolean = false;
-  detectUserAuthentication: Subject<boolean> = new Subject<boolean>();
   isLogged: Subject<Boolean> = new BehaviorSubject<Boolean>(
-    Boolean(localStorage.getItem('token'))
+    Boolean(localStorage.getItem('token') && localStorage.getItem('isEmailVerified'))
   );
-  constructor(private fireauth: AngularFireAuth, private router: Router) {}
+  constructor(private fireauth: AngularFireAuth, private router: Router) { }
 
   // Login method
   login(email: string, password: string) {
@@ -25,7 +24,6 @@ export class AuthService {
         );
         if (res.user?.emailVerified) {
           localStorage.setItem('isUserLoggedIn', 'true');
-          this.detectUserAuthentication.next(true);
           this.router.navigate(['/contact-us']);
           this.isLogged.next(true);
         } else {

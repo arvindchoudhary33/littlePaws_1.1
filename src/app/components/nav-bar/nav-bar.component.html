@@ -54,11 +54,11 @@
           <fa-icon [icon]="faQuestion"></fa-icon>faq
         </li>
       </a>
-      <a routerLink="/all-pets" *ngIf="displayRoutes">
-        <li (click)="toggleSideNav()">Adopt</li>
+      <a routerLink="/all-pets" *ngIf="isUserLoggedIn">
+        <li (click)="toggleSideNav()">all-pets test</li>
       </a>
 
-      <a routerLink="/all-pets" *ngIf="displayRoutes">
+      <a routerLink="/all-pets" *ngIf="isUserLoggedIn">
         <li (click)="toggleSideNav()">some page</li>
       </a>
     </ul>
