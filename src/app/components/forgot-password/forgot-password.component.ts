@@ -8,7 +8,8 @@ import { AuthService } from 'src/app/shared/auth.service';
   styleUrls: ['./forgot-password.component.scss'],
 })
 export class ForgotPasswordComponent implements OnInit {
-  constructor(private auth: AuthService) { }
+  isSpinnerLoading?: boolean;
+  constructor(private auth: AuthService) {}
 
   emailFormControl = new FormControl('', [
     Validators.required,
@@ -21,5 +22,9 @@ export class ForgotPasswordComponent implements OnInit {
   forgotPassword(forgotPasswordGroup: any) {
     this.auth.forgotPassword(forgotPasswordGroup.email);
   }
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.auth.isLoading.subscribe((value) => {
+      this.isSpinnerLoading = Boolean(value);
+    });
+  }
 }

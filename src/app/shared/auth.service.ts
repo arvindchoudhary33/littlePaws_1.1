@@ -94,11 +94,14 @@ export class AuthService implements OnInit {
 
   //Forgot password
   forgotPassword(email: string) {
+    this.isLoading.next(true)
     this.fireauth.sendPasswordResetEmail(email).then(
       () => {
         this.router.navigate(['/verify-email']);
+        this.isLoading.next(false)
       },
       (err) => {
+        this.isLoading.next(false)
         alert(err.message);
       }
     );
