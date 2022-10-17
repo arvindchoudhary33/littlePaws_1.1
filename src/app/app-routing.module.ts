@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SignInGuardService } from './auth-guard/sign-in-guard.service';
 import { UserAuthGuardService } from './auth-guard/user-auth-guard.service';
+import { VerifyEmailGuardService } from './auth-guard/verify-email-guard.service';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AllPetsComponent } from './components/all-pets/all-pets.component';
 import { ChooseTypeComponent } from './components/choose-type/choose-type.component';
@@ -13,7 +14,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { VerifyPasswordComponent } from './components/verify-password/verify-password.component';
 
 const routes: Routes = [
-  { path: '**', pathMatch: 'full', redirectTo: 'HomeComponent' },
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'contact-us', component: ContactUsComponent },
@@ -34,7 +35,12 @@ const routes: Routes = [
     canActivate: [UserAuthGuardService],
   },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'verify-email', component: VerifyPasswordComponent },
+  {
+    path: 'verify-email',
+    component: VerifyPasswordComponent,
+    canActivate: [VerifyEmailGuardService]
+  },
+  { path: '**', redirectTo: '/home' },
 ];
 
 @NgModule({

@@ -18,7 +18,7 @@ export class SignUpComponent implements OnInit {
   isDisabled: boolean = true;
   minPassLength = 8;
 
-  isSpinnerLoading: boolean = false;
+  isSpinnerLoading?: boolean;
   constructor(
     private auth: AuthService,
     public activatedRoute: ActivatedRoute,
@@ -31,6 +31,9 @@ export class SignUpComponent implements OnInit {
     this.currentTab = localStorage.getItem('currentTab');
     console.log('current tab', this.currentTab);
     this.selectedTabIndex = history.state.currentIndex;
+    this.auth.isLoading.subscribe((value) => {
+      this.isSpinnerLoading = Boolean(value)
+    })
     this.activatedRoute.data.pipe(take(1)).subscribe((data) => {
       console.log(data); // do something with the data
     });
@@ -50,7 +53,7 @@ export class SignUpComponent implements OnInit {
 
   register(signUpForm: any) {
     console.log('heyyy', signUpForm.email);
-    this.isSpinnerLoading = true;
+    // this.isSpinnerLoading = true;
     if (this.emailFormControl && this.passwordFormControl) {
       this.auth.register(signUpForm.email, signUpForm.password);
     }

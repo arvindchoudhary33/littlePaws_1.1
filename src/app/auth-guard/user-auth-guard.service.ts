@@ -22,6 +22,7 @@ export class UserAuthGuardService {
     if (this.isUserLoggedIn) {
       return true
     }
+    this.router.navigate(['/verify-email'])
     return false;
   }
 }
