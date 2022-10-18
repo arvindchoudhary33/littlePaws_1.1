@@ -58,3 +58,25 @@ $my-theme: mat.define-light-theme(
 .mat-spinner circle {
   stroke: white !important;
 }
+
+.mat-snack-bar-container {
+  background: map-get(v.$red-palette, 600);
+  color: white;
+  .mat-button-wrapper {
+    color: white;
+  }
+}
+
+.mat-divider {
+}
+
+.custom-mat-hint {
+  text-align: left !important;
+  font-weight: 400;
+  line-height: 1.125;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 75%;
+  margin: 5px 0px 5px 10px;
+}

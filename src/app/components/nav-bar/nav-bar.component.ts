@@ -6,6 +6,8 @@ import {
   faUsers,
   faHouseChimneyWindow,
   faPhone,
+  faCat,
+  faShieldDog,
   faCircleQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/shared/auth.service';
@@ -19,6 +21,8 @@ export class NavBarComponent implements OnInit {
   faUsers = faUsers;
   faHouseChimneyWindow = faHouseChimneyWindow;
   faPhone = faPhone;
+  faCat = faCat;
+  faShieldDog = faShieldDog;
   faQuestion = faCircleQuestion;
   isUserLoggedIn: boolean = Boolean(
     localStorage.getItem('token') && localStorage.getItem('isEmailVerified')
@@ -31,22 +35,12 @@ export class NavBarComponent implements OnInit {
     private userauth: AuthService,
     // location: Location,
     router: Router
-  ) {
-    userauth.isLogged.subscribe((data) => {
-      this.isUserLoggedIn = Boolean(data);
-      console.log("logged ", this.isUserLoggedIn)
-    });
-
-    // router.events.subscribe((val) => {
-    //   if (location.path() == '/choose-type') {
-    //   } else {
-    //   }
-    // });
-  }
+  ) { }
 
   ngOnInit(): void {
     // subscribing to user logged in var to change the sign-in/ logout button at top right
     this.userauth.isLogged.subscribe((isLogged) => {
+      console.log(isLogged)
       this.isUserLoggedIn = Boolean(isLogged);
     });
   }

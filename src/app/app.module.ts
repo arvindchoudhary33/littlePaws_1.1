@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { MatCardModule } from '@angular/material/card';
 import { FooterComponent } from './components/footer/footer.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,13 +29,16 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
+import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { getStorage, provideStorage } from '@angular/fire/storage'
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { ChooseTypeComponent } from './components/choose-type/choose-type.component';
 import { AllPetsComponent } from './components/all-pets/all-pets.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VerifyPasswordComponent } from './components/verify-password/verify-password.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { PutForAdoptionComponent } from './components/put-for-adoption/put-for-adoption.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -45,10 +51,10 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     FaqComponent,
     LoginComponent,
     SignUpComponent,
-    ChooseTypeComponent,
     AllPetsComponent,
     VerifyPasswordComponent,
     ForgotPasswordComponent,
+    PutForAdoptionComponent,
   ],
   entryComponents: [SignUpComponent, LoginComponent],
   imports: [
@@ -63,15 +69,22 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     MatIconModule,
     MatMenuModule,
     MatInputModule,
+    MatDividerModule,
     FontAwesomeModule,
     MatDialogModule,
     MatTabsModule,
     ReactiveFormsModule,
     MatCardModule,
+    MatSelectModule,
+    MatAutocompleteModule
+    ,
+    MatChipsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    AngularFireStorageModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
+    provideStorage(() => getStorage()),
     provideFirestore(() => getFirestore())
   ],
   providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }

@@ -81,6 +81,13 @@ fa-icon {
   overflow: hidden;
 }
 
+.router-outlet-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .login-signup-button:hover {
   background: map-get(v.$blue-palette, 100);
 }

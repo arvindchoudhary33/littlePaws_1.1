@@ -55,17 +55,23 @@
         </li>
       </a>
       <a routerLink="/all-pets" *ngIf="isUserLoggedIn">
-        <li (click)="toggleSideNav()">all-pets test</li>
+        <li (click)="toggleSideNav()">
+          <fa-icon [icon]="faCat"></fa-icon>Adopt
+        </li>
       </a>
 
-      <a routerLink="/all-pets" *ngIf="isUserLoggedIn">
-        <li (click)="toggleSideNav()">some page</li>
+      <a routerLink="/put-for-adoption" *ngIf="isUserLoggedIn">
+        <li (click)="toggleSideNav()">
+          <fa-icon [icon]="faShieldDog"></fa-icon>Put-For-Adoption
+        </li>
       </a>
     </ul>
   </mat-sidenav>
   <mat-sidenav-content role="main" class="sidenav-content-container">
     <div class="side-nav-content-container">
-      <router-outlet></router-outlet>
+      <div class="router-outlet-container">
+        <router-outlet></router-outlet>
+      </div>
       <app-footer></app-footer>
     </div>
   </mat-sidenav-content>

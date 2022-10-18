@@ -11,12 +11,12 @@ export class LoginComponent implements OnInit {
   isSpinnerLoading?: boolean;
   constructor(private auth: AuthService) { }
 
-  emailFormControl = new FormControl('xyz@gmail.com', [
+  emailFormControl = new FormControl('arvindchoudhary.in.connect@gmail.com', [
     Validators.required,
     Validators.email,
   ]);
 
-  passwordFormControl = new FormControl('xyzxyzxyz', [
+  passwordFormControl = new FormControl('rahulsharma', [
     Validators.required,
     Validators.minLength(this.minPassLength),
   ]);

@@ -3,25 +3,41 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { NavBarComponent } from '../components/nav-bar/nav-bar.component';
-import { SignUpComponent } from '../components/sign-up/sign-up.component';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { getAuth } from "firebase/auth";
+
+// import { NavBarComponent } from '../components/nav-bar/nav-bar.component';
+// import { SignUpComponent } from '../components/sign-up/sign-up.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnInit {
   isLoading: Subject<Boolean> = new BehaviorSubject<Boolean>(false);
-  isLogged: Subject<Boolean> = new BehaviorSubject<Boolean>(false
+  isLogged: Subject<Boolean> = new BehaviorSubject<Boolean>(
+    Boolean(
+      localStorage.getItem('token') && localStorage.getItem('isEmailVerified')
+    )
   );
+
+  auth = getAuth();
+  user = this.auth.currentUser?.uid
+  currentUserID: Subject<String> = new BehaviorSubject<String>(String(this.user));
   constructor(
     private fireauth: AngularFireAuth,
     private router: Router,
-    private _snackBar: MatSnackBar
-  ) { }
+    private _snackBar: MatSnackBar,
+    private fStore: AngularFirestore
+  ) {
+
+  }
 
   ngOnInit() {
-    this.isLogged.next(Boolean(
-      localStorage.getItem('token') && localStorage.getItem('isEmailVerified')))
+    this.isLogged.next(
+      Boolean(
+        localStorage.getItem('token') && localStorage.getItem('isEmailVerified')
+      )
+    );
   }
 
   openSnackBar(message: any) {
@@ -36,6 +52,7 @@ export class AuthService implements OnInit {
     this.fireauth.signInWithEmailAndPassword(email, password).then(
       (res) => {
         if (res.user?.emailVerified) {
+          this.currentUserID.next(String(res.user.uid));
           localStorage.setItem('isUserLoggedIn', 'true');
           localStorage.setItem('token', 'true');
           localStorage.setItem(
@@ -45,6 +62,11 @@ export class AuthService implements OnInit {
           this.router.navigate(['/all-pets']);
           this.isLoading.next(false);
           this.isLogged.next(true);
+          this.fStore.collection('users').doc(res.user?.uid).set({
+            uid: res.user?.uid,
+            email: res.user?.email,
+          });
+          localStorage.setItem('uid', String(res.user?.uid))
         } else {
           this.router.navigate(['/verify-email']);
         }
@@ -65,13 +87,15 @@ export class AuthService implements OnInit {
       (res) => {
         localStorage.setItem('token', 'false');
         localStorage.setItem('isUserLoggedIn', 'false');
+        localStorage.setItem('uid', String(res.user?.uid))
         this.router.navigate(['/sign-up']);
         this.sendEmailVerification(res.user);
-        console.log(res.user)
+        console.log("register", res.user);
+        this.currentUserID.next(String(res.user?.uid));
         this.isLoading.next(false);
       },
       (err) => {
-        this.openSnackBar(err.code)
+        this.openSnackBar(err.code);
         this.router.navigate(['/sign-up']);
         this.isLoading.next(false);
       }
@@ -81,6 +105,8 @@ export class AuthService implements OnInit {
   logout() {
     this.fireauth.signOut().then(
       () => {
+        this.currentUserID.next('');
+        localStorage.removeItem('uid')
         localStorage.removeItem('token');
         this.isLogged.next(false);
         this.router.navigate(['/sign-up']);
@@ -94,14 +120,14 @@ export class AuthService implements OnInit {
 
   //Forgot password
   forgotPassword(email: string) {
-    this.isLoading.next(true)
+    this.isLoading.next(true);
     this.fireauth.sendPasswordResetEmail(email).then(
       () => {
         this.router.navigate(['/verify-email']);
-        this.isLoading.next(false)
+        this.isLoading.next(false);
       },
       (err) => {
-        this.isLoading.next(false)
+        this.isLoading.next(false);
         alert(err.message);
       }
     );
