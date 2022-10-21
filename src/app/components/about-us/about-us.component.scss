@@ -1,0 +1,65 @@
+.aboutus-container {
+  height: 100%;
+  width: 100%;
+  margin-bottom: 100px;
+  overflow: scroll;
+}
+.question-title {
+  text-align: center;
+  font-family: Didot, serif;
+}
+span {
+  color: rgb(85, 110, 235);
+}
+
+p a {
+  font-size: 10vw;
+}
+.aboutus-image {
+  border: 1px solid rgb(210, 183, 96);
+  width: 300px;
+  height: 290px;
+  border-radius: 50%;
+}
+.aboutus-image-2 {
+  border: 1px solid rgb(210, 183, 96);
+  margin-left: 50px;
+  margin-top: -10px;
+  width: 300px;
+  height: 290px;
+  border-radius: 50%;
+}
+
+.banner {
+  border: 1px solid lightgray;
+  border-radius: 4px;
+}
+
+.example-card {
+  max-width: 250px;
+  max-height: fit-content;
+  margin-bottom: 100px;
+  margin-top: 20px;
+}
+
+.mat-card-title {
+  display: flex;
+  justify-items: center;
+  font-size: 15px;
+  text-align: center;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  column-gap: 40px;
+  margin-left: 100px;
+}
+p {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 10px;
+}
+h1 {
+  margin-top: 70px;
+}

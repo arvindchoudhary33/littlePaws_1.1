@@ -1,28 +1,38 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ElementRef, ViewChild, OnChanges } from '@angular/core';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { DatabaseService } from 'src/app/shared/database.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-
 
 import { map, startWith } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { petsInfo } from 'src/app/model/commonInterfaces';
+
 @Component({
   selector: 'app-put-for-adoption',
   templateUrl: './put-for-adoption.component.html',
   styleUrls: ['./put-for-adoption.component.scss'],
 })
-export class PutForAdoptionComponent implements OnInit {
+export class PutForAdoptionComponent implements OnInit, OnChanges {
+  panelOpenState = false;
+  dogOrCatObject = [
+    { value: 'dog', checked: true },
+    { value: 'cat', checked: false },
+  ];
+  checkedRadioButton = this.dogOrCatObject[0].value;
+  fetchedPetsData: petsInfo[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   searchTags = new FormControl('');
   filteredTags: Observable<string[]>;
-  tags: string[] = ['cat'];
+  tags: string[] = ['adorable'];
   allTags: string[] = [
-    'cat',
-    'dog',
+    'adorable',
+    'friendly',
+    'disabled',
     'vaccinated',
     'kharadi',
     'white',
@@ -36,11 +46,17 @@ export class PutForAdoptionComponent implements OnInit {
 
   @ViewChild('tagInput') tagInput!: ElementRef<HTMLInputElement>;
 
+  isSpinnerLoading: boolean = false;
   myData: any;
   selectedFile?: File;
   fb: any;
   downloadURL?: Observable<string>;
-  constructor(private database: DatabaseService, private storage: AngularFireStorage) {
+  disable: boolean = false;
+  constructor(
+    private _snackBar: MatSnackBar,
+    private database: DatabaseService,
+    private storage: AngularFireStorage
+  ) {
     this.filteredTags = this.searchTags.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) =>
@@ -49,9 +65,21 @@ export class PutForAdoptionComponent implements OnInit {
     );
   }
   ngOnInit(): void {
-    console.log(localStorage.getItem('uid'));
+    this.fetchAllPetsData();
   }
 
+  ngOnChanges() {
+    this.fetchAllPetsData();
+  }
+
+  fetchAllPetsData() {
+
+    this.database.fetchAllPetsForUser().then((value) => {
+      console.log('value', value);
+      this.fetchedPetsData.push(...(<[]>value));
+      // this.fetchedPetsData.push(Object(value));
+    })
+  }
   year: string[] = ['none', '0', '1', '2', '3', '5', '6', '7', '8', '9', '10'];
   month: string[] = [
     'none',
@@ -79,17 +107,17 @@ export class PutForAdoptionComponent implements OnInit {
     Validators.required,
     Validators.maxLength(10),
     Validators.minLength(10),
+    Validators.pattern('[- +()0-9]+'),
   ]);
 
-  petPicture = new FormControl('', [
-    Validators.required
-  ])
+  petPicture = new FormControl('', [Validators.required]);
   additionalTags = new FormControl(this.tags);
 
   putForAdoptionPetInfo = new FormGroup({
     id: new FormControl(localStorage.getItem('uid'), []),
     ownerName: this.ownerName,
     phoneNumber: this.phoneNumber,
+    catOrDog: new FormControl(this.checkedRadioButton, []),
     ageInYear: new FormControl(this.selectedYear, []),
     ageInMonth: new FormControl(this.selectedMonth, []),
     isSpayedNeuter: new FormControl(this.selectedSpayedNeuter, []),
@@ -107,7 +135,9 @@ export class PutForAdoptionComponent implements OnInit {
   });
 
   onFileSelected(event: any) {
-    let imageId = `${new Date().getDate()}${new Date().getHours()}${new Date().getSeconds()}${new Date().getMilliseconds()}`
+    this.isSpinnerLoading = true;
+    this.disable = false;
+    let imageId = `${new Date().getDate()}${new Date().getHours()}${new Date().getSeconds()}${new Date().getMilliseconds()}`;
 
     const file = event.target.files[0];
     const filePath = `petImages/${imageId}`;
@@ -118,30 +148,68 @@ export class PutForAdoptionComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.downloadURL = fileRef.getDownloadURL();
-          this.downloadURL.subscribe(url => {
+          this.downloadURL.subscribe((url) => {
             if (url) {
               this.fb = url;
             }
-            console.log("this is the thing ", this.fb);
+            console.log('this is the thing ', this.fb);
+            this.isSpinnerLoading = false;
+            this.disable = true;
           });
         })
       )
-      .subscribe(url => {
+      .subscribe((url) => {
         if (url) {
           console.log(url);
         }
       });
   }
+
+  // isSpinnerLoading(){
+  // }
+  isDisabled() {
+    if (this.putForAdoptionPetInfo.valid && this.disable) {
+      return false;
+    }
+    return true;
+  }
   putForAdoption(petInfo: any) {
-    console.log(petInfo);
-    // console.log(Object.assign(this.myData, { "new": "new" }));
+    this.isSpinnerLoading = true;
+    let docRef;
+    this.downloadURL?.subscribe((value) => {
+      if (value) {
+        console.log(Object.assign(petInfo, { petPicture: this.fb }));
+        docRef = this.database.addPetForAdoption(petInfo);
+        this.isSpinnerLoading = false;
+        this.clearForm();
+        this.tags = [];
+      }
+    });
   }
 
+  changeAdoptionStatus(id: string) {
+    this.database
+      .updateAdoptionStatus(id, "true").then((value) => {
+        if (Boolean(value) == true) {
+          this.fetchAllPetsData()
+        }
+      })
+
+  }
+  clearForm() {
+    this.putForAdoptionPetInfo.reset();
+    this.ownerName.setErrors(null);
+    this.phoneNumber.setErrors(null);
+  }
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
     // Add the tags
-    if (value) {
+    if (
+      value.toLowerCase() != 'cat' &&
+      value.toLowerCase() != 'dog' &&
+      value != ''
+    ) {
       this.tags.push(value);
     }
 

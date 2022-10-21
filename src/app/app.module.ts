@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { FooterComponent } from './components/footer/footer.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -27,10 +28,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { NextDirective } from './next.directive';
+import { PrevDirective } from './prev.directive';
+import { PetcareComponent } from './components/petcare/petcare.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatGridListModule } from '@angular/material/grid-list';
+
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { getStorage, provideStorage } from '@angular/fire/storage'
+import {
+  AngularFireStorage,
+  AngularFireStorageModule,
+} from '@angular/fire/compat/storage';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { AllPetsComponent } from './components/all-pets/all-pets.component';
@@ -52,8 +63,11 @@ import { MatChipsModule } from '@angular/material/chips';
     LoginComponent,
     SignUpComponent,
     AllPetsComponent,
+    PetcareComponent,
     VerifyPasswordComponent,
     ForgotPasswordComponent,
+    NextDirective,
+    PrevDirective,
     PutForAdoptionComponent,
   ],
   entryComponents: [SignUpComponent, LoginComponent],
@@ -76,19 +90,21 @@ import { MatChipsModule } from '@angular/material/chips';
     ReactiveFormsModule,
     MatCardModule,
     MatSelectModule,
-    MatAutocompleteModule
-    ,
+    MatAutocompleteModule,
+    MatRadioModule,
     MatChipsModule,
     MatSnackBarModule,
+    MatGridListModule,
+    MatExpansionModule,
     MatProgressSpinnerModule,
+    MatTableModule,
     AngularFireStorageModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
   ],
-  providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }
-  ],
+  providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

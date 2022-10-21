@@ -66,7 +66,9 @@ $my-theme: mat.define-light-theme(
     color: white;
   }
 }
-
+.green-snack-bar {
+  background: map-get(v.$green-palette, 600);
+}
 .mat-divider {
 }
 

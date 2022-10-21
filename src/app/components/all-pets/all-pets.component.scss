@@ -1,0 +1,75 @@
+@use "../../../colors" as v;
+.all-pets-main-container {
+  margin-top: 20px;
+  min-width: 350px;
+  width: 1000px;
+  height: fit-content;
+
+  margin-bottom: 100px;
+}
+.search-tag-input {
+  width: 100%;
+}
+
+.all-pets-cards-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  column-gap: 30px;
+  justify-content: center;
+  row-gap: 15px;
+  height: fit-content;
+}
+
+.all-pets-single-card {
+  font-family: "Ubuntu";
+  height: 320px !important;
+  width: 220px !important;
+  padding: 0 !important;
+  overflow: hidden;
+  border: 1px solid lightGray;
+  border-radius: 4px;
+}
+
+.all-pets-card-image {
+  height: 200px;
+  width: 100%;
+}
+
+.all-pets-card-info {
+  min-height: 110px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  overflow-wrap: break-word;
+  gap: 3px;
+  font-size: 12px;
+  overflow: scroll;
+}
+
+.question {
+  color: map-get(v.$blue-palette, 600);
+}
+.answer {
+  font-size: 1em;
+  color: map-get(v.$green-palette, 600);
+}
+
+.all-pets-card-button {
+  height: 30px;
+  padding: 0px;
+  width: 100%;
+  background-color: map-get(v.$green-palette, 600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none !important;
+}
+
+.catOrDogRadioFilter {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  margin-bottom: 15px;
+}

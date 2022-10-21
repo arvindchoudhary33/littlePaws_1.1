@@ -1,1 +1,228 @@
-<div class="home-page-main-container">Home page</div>
+<html>
+<head>
+    <!-- For fa fa icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<!-- For Slidshow Images -->
+
+
+                <div class="banner_images ">
+                <div class="images ">
+                <img [src]="images" class = "banner">
+                <img [src]="images2" class = "banner">
+                <img [src]="images3" class = "banner"> 
+
+                <div class ="btns">      
+                <button #myButton (click)="triggerClick()" type='button' class ="next fa fa-arrow-right fa-2x" appNext> </button>
+                <button type='button' class ="prev fa fa-arrow-left fa-2x" appPrev> </button>    
+                </div>
+                </div>
+                </div>
+                
+
+    <!-- Section 1 -->
+                <div class="section-1-container ">
+                <div class="container">
+                <div class="row">
+                <div class="col section-1   fadeIn">
+                <h2> </h2>
+                <div class="divider-1  fadeInUp"><span></span></div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="col-md-4 sec1  fadeInUp">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="sec1-icon">
+                <i class="fa fa-home"></i>
+                </div>
+                </div>
+
+                <div class="col-md-8">
+                <h3>Re Home</h3>
+                <p>littlePaws helps to find a shelter for homeless pet.</p>
+                </div>
+                </div>
+                </div>
+
+                <div class="col-md-4 sec1  fadeInDown">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="sec1-icon">
+                <i class="fa fa-plus"></i>
+                </div>
+                </div>
+
+                <div class="col-md-8">
+                <h3>Adopted</h3>
+                <p>littlePaws has found many shelters for the pets and helped people to find their campanion</p>
+                </div>
+                </div>
+                </div>
+
+                <div class="col-md-4 sec1  fadeInUp">
+                <div class="row">
+                <div class="col-md-4">
+                <div class="sec1-icon hello">
+                <i class="fa fa-hospital " routerLink="/petcare"></i>
+                </div>
+                </div>
+
+                <div class="col-md-8">
+                <h3>Pet Care</h3>
+                <p>Click on the button to find details about Petcare</p>
+                </div>
+                </div>
+                </div>
+                
+                </div>
+                </div>
+                </div>
+
+    <!-- Section 2 -->
+                <div class="section-2-container section-container section-container-gray-bg">
+                <div class="container">
+                <div class="row">
+                <div class="col section-2 section-description  fadeIn">
+                </div>
+                </div>
+                <div class="row">
+                <div class="col sec2  fadeInLeft">
+                <h3> littlePaws Motive : </h3>
+                <p class="medium-paragraph">
+                 We understand how difficult the pet adoption process may be. With our initiative, we have made some progress in resolving this issue.
+                Although many people want to adopt a pet, the adoption procedure can be difficult and sometimes result in applicants getting refused. 
+                This creates barriers between humans and animals, contributing to the overpopulation in shelters.
+                littlePaws  tries to connect more people with pets in their neighbourhood, with the goal of lowering the number of animals that are homeless and providing them a shelter and humans a pet friend.
+            
+                </p>
+                </div>
+                </div>
+                </div>
+                </div><br>
+
+                <section class="book-groomer-section adopt-love-section">
+                <div class="card-book">
+                <div class="foundation-content-container">
+                <img src="//dm6g3jbka53hp.cloudfront.net/static-images/adopt-dont-shop-thepetnest.svg" class="foundation-img">
+                <div class="foundation-content">
+                <h2 class="adopt-love-text">Adopt Love</h2>
+                <p class="adopt-love-description">
+                Approximately 1478 dogs &amp; cats die every day on road in India. ThePetNest is on a mission to provide every dog and cat a home before 2035.
+                It’s just one of the many ways ThePetNest! gives back and helps you become a part of something larger. Join ThePetStar Community and help setting up Pet houses in your surrounding for strays.
+                </p>
+                </div>
+                </div>
+                <a class="banner-link">
+                <button class="adopt-love-cta adoptButton" routerLink="/petcare" type="button">Pet Care</button>
+                </a>
+                </div>
+                </section><br><br>
+
+    <!-- Section 3 -->
+                <div class="section-3-container section-container">
+                <div class="container">
+
+                <div class="row">
+                <div class="col section-3 section-description  fadeIn">
+                <h2>How littlePaws Works ?</h2>
+                <div class="divider-1  fadeInUp"><span></span></div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="col-md-6 sec3  fadeInLeft">
+                <div class="row">
+                <div class="col-md-3">
+                <div class="sec3-icon">
+                <i class="fas fa-search"></i>
+                </div>
+                </div>
+
+                <div class="col-md-9">
+                <h3>Search for pet</h3>
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                incididunt ut labore et.
+                Ut wisi enim ad minim veniam, quis nostrud.
+                </p><i class ="fa fa-arrow-right"></i>
+                </div>
+                </div>
+                </div>
+
+                <div class="col-md-6 sec3  fadeInLeft">
+                <div class="row">
+                <div class="col-md-3">
+                <div class="sec3-icon">
+                <i class="fab fa-wpforms"></i>
+                </div>
+                </div>
+
+                <div class="col-md-9">
+                <h3>Fill Adoption form </h3>
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                incididunt ut labore et.
+                Ut wisi enim ad minim veniam, quis nostrud.
+                </p><i class ="fa fa-arrow-down"></i>
+                </div>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="col-md-6 sec3  fadeInLeft">
+                <div class="row">
+                <div class="col-md-3">
+                <div class="sec3-icon">
+                <i class="fas fa-users"></i>
+                </div>
+                </div>
+
+                <div class="col-md-9">
+                <h3>Take you campanion home.</h3>
+
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                incididunt ut labore et.
+                Ut wisi enim ad minim veniam, quis nostrud.
+                </p><i class ="fa fa-thumbs-up"></i>
+                </div>
+                </div>
+                </div>
+
+                <div class="col-md-6 sec3  fadeInLeft">
+                <div class="row">
+                <div class="col-md-3">
+                <div class="sec3-icon">
+                <i class="fa fa-paw"></i>
+                </div>
+                </div>
+
+                <div class="col-md-9">
+                    <h3>Meet the pet and pet owner</h3>
+
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                incididunt ut labore et.
+                Ut wisi enim ad minim veniam, quis nostrud.
+                </p><i class ="fa fa-arrow-left"></i>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+
+
+
+
+</body>
+
+</html>
+

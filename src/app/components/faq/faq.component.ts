@@ -11,5 +11,7 @@ export class FaqComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  panelOpenState = false;
+
 
 }
