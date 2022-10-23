@@ -1,11 +1,7 @@
 @use "../../../colors" as v;
 .all-pets-main-container {
-  margin-top: 20px;
-  min-width: 350px;
-  width: 1000px;
-  height: fit-content;
-
-  margin-bottom: 100px;
+  margin-top: 50px;
+  margin-bottom: 150px;
 }
 .search-tag-input {
   width: 100%;
@@ -17,7 +13,7 @@
   grid-template-columns: auto auto auto auto;
   column-gap: 30px;
   justify-content: center;
-  row-gap: 15px;
+  row-gap: 30px;
   height: fit-content;
 }
 
@@ -27,7 +23,9 @@
   width: 220px !important;
   padding: 0 !important;
   overflow: hidden;
-  border: 1px solid lightGray;
+  /* border: 1px solid lightGray; */
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   border-radius: 4px;
 }
 
@@ -72,4 +70,22 @@
   flex-direction: row;
   gap: 15px;
   margin-bottom: 15px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .all-pets-cards-container {
+    grid-template-columns: auto auto auto;
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  .all-pets-cards-container {
+    grid-template-columns: auto auto;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .all-pets-cards-container {
+    grid-template-columns: auto;
+  }
 }

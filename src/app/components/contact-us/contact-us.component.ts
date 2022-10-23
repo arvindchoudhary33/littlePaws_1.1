@@ -13,6 +13,7 @@ export class ContactUsComponent implements OnInit {
   isLoading: boolean = false;
   ngOnInit(): void { }
 
+  // this.database.all.subscribe((value) => { this.isUserLoggedIn = Boolean(value) })
   email = new FormControl('', [Validators.required, Validators.email]);
   name = new FormControl('', [Validators.required]);
   query = new FormControl('', [Validators.required]);
@@ -37,7 +38,7 @@ export class ContactUsComponent implements OnInit {
   }
   getErrorMessage() {
     if (this.email.hasError('required')) {
-      return 'You must enter a value';
+      return 'email cannot be empty';
     }
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }

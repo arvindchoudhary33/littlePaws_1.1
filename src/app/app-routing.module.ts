@@ -9,6 +9,7 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
 import { FaqComponent } from './components/faq/faq.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { HomeComponent } from './components/home/home.component';
+import { PetcareComponent } from './components/petcare/petcare.component';
 import { PutForAdoptionComponent } from './components/put-for-adoption/put-for-adoption.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { VerifyPasswordComponent } from './components/verify-password/verify-password.component';
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'contact-us', component: ContactUsComponent },
+  { path: 'petcare', component: PetcareComponent },
   { path: 'faq', component: FaqComponent },
   {
     path: 'sign-up',

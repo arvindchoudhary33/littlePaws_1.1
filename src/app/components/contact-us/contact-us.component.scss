@@ -4,13 +4,13 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
 }
 .form-container {
   position: relative;
   border-radius: 4px;
   height: fit-content;
-  width: 300px;
-  min-width: 300px;
+  min-width: 350px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   padding: 20px;
@@ -18,7 +18,9 @@
 .mat-form-field {
   width: 100%;
 }
-.contact-us-image {
-  margin-top: 100px;
-  width: 90%;
+
+@media only screen and (max-width: 350px) {
+  .form-container {
+    min-width: 250px;
+  }
 }

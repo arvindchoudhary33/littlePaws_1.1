@@ -50,6 +50,7 @@ import { VerifyPasswordComponent } from './components/verify-password/verify-pas
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { PutForAdoptionComponent } from './components/put-for-adoption/put-for-adoption.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { PetInfoComponent } from './components/put-for-adoption/child/pet-info/pet-info.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { MatChipsModule } from '@angular/material/chips';
     NextDirective,
     PrevDirective,
     PutForAdoptionComponent,
+    PetInfoComponent,
   ],
   entryComponents: [SignUpComponent, LoginComponent],
   imports: [

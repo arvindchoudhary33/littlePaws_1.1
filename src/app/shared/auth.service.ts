@@ -35,9 +35,11 @@ export class AuthService implements OnInit {
   ngOnInit() {
     this.isLogged.next(
       Boolean(
+
         localStorage.getItem('token') && localStorage.getItem('isEmailVerified')
       )
     );
+    console.log("auth", this.isLogged)
   }
 
   openSnackBar(message: any) {

@@ -14,6 +14,7 @@ import {
   where,
   getDocs,
   onSnapshot,
+  orderBy,
 } from '@angular/fire/firestore';
 import { BehaviorSubject, empty, Observable, Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -24,7 +25,9 @@ import { petsInfo } from '../model/commonInterfaces';
   providedIn: 'root',
 })
 export class DatabaseService implements OnInit {
-  // anyChange: Subject<Boolean> = new BehaviorSubject<Boolean>(false);
+  allPutForAdoptionPetsData: Subject<petsInfo[]> = new BehaviorSubject<
+    petsInfo[]
+  >([]);
   userID: any;
   constructor(
     private authService: AuthService,
@@ -83,7 +86,6 @@ export class DatabaseService implements OnInit {
         where('searchTags', 'array-contains-any', tags),
         where('catOrDog', '==', catOrDogFilter)
       );
-      console.log('why');
     } else {
       q = query(
         collection(this.fStore_, 'petsForAdoption'),
@@ -101,7 +103,6 @@ export class DatabaseService implements OnInit {
   }
 
   async addPetForAdoption(petInfo: any) {
-    console.log(petInfo);
     const docRef = await addDoc(collection(this.fStore_, 'petsForAdoption'), {
       ownerName: petInfo.ownerName,
       phoneNumber: petInfo.phoneNumber,
@@ -113,14 +114,13 @@ export class DatabaseService implements OnInit {
       petPictureURL: petInfo.petPicture,
       searchTags: petInfo.searchTags,
       catOrDog: petInfo.catOrDog,
-      adopted: false,
+      adopted: "false",
       uid: localStorage.getItem('uid'),
     });
     if (docRef.id) {
       this.openSnackBar('Added Successfully');
       return true;
     }
-    console.log(docRef.id);
     return false;
   }
 
@@ -128,16 +128,17 @@ export class DatabaseService implements OnInit {
     let fetchedPetsInfo: petsInfo[] = [];
     const q = query(
       collection(this.fStore_, 'petsForAdoption'),
+      orderBy("adopted"),
+      orderBy("date"),
       where('uid', '==', localStorage.getItem('uid'))
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       let obj = doc.data();
       Object.assign(obj, { documentID: doc.id });
-      console.log('oooooo', obj);
       fetchedPetsInfo.push(Object(obj));
-      console.log(doc.id, ' => ', obj);
     });
+    this.allPutForAdoptionPetsData.next(Object(this.fetchAllPetsForUser));
     if (fetchedPetsInfo.length > 0) {
       return fetchedPetsInfo;
     }
@@ -160,19 +161,19 @@ export class DatabaseService implements OnInit {
       });
   }
 
-
   async updateAdoptionStatus(id: string, status: string) {
-
-    const docRef = doc(this.fStore_, "petsForAdoption", id);
-
+    const docRef = doc(this.fStore_, 'petsForAdoption', id);
     await updateDoc(docRef, {
-      adopted: status
-    }).then(value => {
-      this.openSnackBar("status changed successfully")
-      return true
-    }).catch(e => {
-      this.openSnackBar(e.message)
-      return false;
+      adopted: status,
     })
+      .then((value) => {
+        this.openSnackBar('status changed successfully');
+        this.fetchAllPetsForUser();
+        return true;
+      })
+      .catch((e) => {
+        this.openSnackBar(e.message);
+        return false;
+      });
   }
 }
