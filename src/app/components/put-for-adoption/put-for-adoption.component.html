@@ -139,40 +139,9 @@
     </mat-card>
   </div>
   <div class="put-for-adoption-user-data-container">
-    <div *ngFor="let pets of fetchedPetsData">
-      <mat-accordion hideToggle="false">
-        <mat-expansion-panel
-          style="margin-top: 10px"
-          (opened)="panelOpenState = true"
-          (closed)="panelOpenState = false"
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title>{{ pets.date }}</mat-panel-title>
-            <mat-panel-description class="mat-expansion-panel-container">
-              ID : {{ pets.documentID }}
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <div style="margin-top: 10px">
-            Adoption status : {{ pets.adopted }}
-            <button
-              mat-raised-button
-              class="mat-raised-green-button"
-              disabled="{{ pets.adopted }}"
-              (click)="changeAdoptionStatus(pets.documentID)"
-            >
-              change status
-            </button>
-
-            <button
-              mat-raised-button
-              class="mat-raised-green-button"
-              (click)="fetchAllPetsData()"
-            >
-              refresh
-            </button>
-          </div>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
+    <app-pet-info
+      [petsData]="fetchedPetsData"
+      (changeStatus)="changeAdoptionStatus($event)"
+    ></app-pet-info>
   </div>
 </div>

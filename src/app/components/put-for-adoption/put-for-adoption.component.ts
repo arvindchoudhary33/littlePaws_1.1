@@ -1,4 +1,10 @@
-import { Component, OnInit, ElementRef, ViewChild, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  OnChanges,
+} from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { DatabaseService } from 'src/app/shared/database.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -6,6 +12,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import { map, startWith } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -17,13 +24,14 @@ import { petsInfo } from 'src/app/model/commonInterfaces';
   templateUrl: './put-for-adoption.component.html',
   styleUrls: ['./put-for-adoption.component.scss'],
 })
-export class PutForAdoptionComponent implements OnInit, OnChanges {
-  panelOpenState = false;
+export class PutForAdoptionComponent implements OnInit {
   dogOrCatObject = [
     { value: 'dog', checked: true },
     { value: 'cat', checked: false },
   ];
   checkedRadioButton = this.dogOrCatObject[0].value;
+  // fetchedPetsData: petsInfo[] = [];
+  allPetsData: any;
   fetchedPetsData: petsInfo[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   searchTags = new FormControl('');
@@ -66,19 +74,20 @@ export class PutForAdoptionComponent implements OnInit, OnChanges {
   }
   ngOnInit(): void {
     this.fetchAllPetsData();
-  }
+    this.allPetsData = this.database.allPutForAdoptionPetsData.subscribe(value => {
+      return value
+    })
 
-  ngOnChanges() {
-    this.fetchAllPetsData();
+    console.log("finally", this.allPetsData)
   }
 
   fetchAllPetsData() {
-
+    this.fetchedPetsData = [];
+    this.database.fetchAllPetsForUser();
     this.database.fetchAllPetsForUser().then((value) => {
-      console.log('value', value);
+      console.log("called")
       this.fetchedPetsData.push(...(<[]>value));
-      // this.fetchedPetsData.push(Object(value));
-    })
+    });
   }
   year: string[] = ['none', '0', '1', '2', '3', '5', '6', '7', '8', '9', '10'];
   month: string[] = [
@@ -183,18 +192,17 @@ export class PutForAdoptionComponent implements OnInit, OnChanges {
         this.isSpinnerLoading = false;
         this.clearForm();
         this.tags = [];
+        if (Boolean(docRef)) {
+          this.fetchAllPetsData()
+        }
       }
     });
   }
 
-  changeAdoptionStatus(id: string) {
-    this.database
-      .updateAdoptionStatus(id, "true").then((value) => {
-        if (Boolean(value) == true) {
-          this.fetchAllPetsData()
-        }
-      })
-
+  changeAdoptionStatus(data: any) {
+    this.database.updateAdoptionStatus(data.id, data.adopted).then((value) => {
+      this.fetchAllPetsData();
+    });
   }
   clearForm() {
     this.putForAdoptionPetInfo.reset();
