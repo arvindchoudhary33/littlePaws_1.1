@@ -34,6 +34,7 @@ import { PrevDirective } from './prev.directive';
 import { PetcareComponent } from './components/petcare/petcare.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { IvyCarouselModule } from 'angular-responsive-carousel';
 
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
@@ -77,6 +78,7 @@ import { PetInfoComponent } from './components/put-for-adoption/child/pet-info/p
     BrowserModule,
     FormsModule,
     AppRoutingModule,
+    IvyCarouselModule,
     MatSidenavModule,
     BrowserAnimationsModule,
     AppRoutingModule,

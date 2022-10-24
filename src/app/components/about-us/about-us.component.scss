@@ -20,12 +20,12 @@ span {
   padding: 12px;
 }
 .about-us-info-data {
-  font-size: 1vw;
+  font-size: 1.5vw;
 }
 .about-us-image {
   border: 1px solid rgb(210, 183, 96);
-  width: 40%;
-  height: 40%;
+  width: 60%;
+  height: 60%;
   border-radius: 50%;
 }
 
@@ -40,7 +40,6 @@ span {
   min-width: 250px;
   max-height: fit-content;
   margin-bottom: 100px;
-  margin-top: 20px;
 }
 
 .mat-card-title {
@@ -69,5 +68,10 @@ span {
 @media only screen and (max-width: 600px) {
   .card-container {
     grid-template-columns: auto;
+  }
+
+  .about-us-image {
+    height: 40%;
+    width: 40%;
   }
 }
