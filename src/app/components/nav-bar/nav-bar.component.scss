@@ -91,3 +91,14 @@ fa-icon {
 .login-signup-button:hover {
   background: map-get(v.$blue-palette, 100);
 }
+
+.login-notification-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+  fa-icon {
+    color: map-get(v.$blue-palette, 300);
+    cursor: pointer;
+  }
+}

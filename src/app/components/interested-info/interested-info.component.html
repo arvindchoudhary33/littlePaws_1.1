@@ -1,0 +1,61 @@
+<div class="interested-info-main-container">
+  <div class="interested-info-sub-container">
+    {{ interestedPetInfo | json }}
+  </div>
+
+  <div class="user-info">
+    <form
+      [formGroup]="userInfoFormGroup"
+      (ngSubmit)="submitUserInfo(userInfoFormGroup.value)"
+    >
+      <p style="margin-bottom: 10px; font-weight: bold">
+        Fill in the necessary information
+      </p>
+      <mat-divider style="margin-bottom: 10px"> </mat-divider>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="name" formControlName="name" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>phone number</mat-label>
+        <input
+          matInput
+          placeholder="phone number"
+          formControlName="phoneNumber"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>near by landmark</mat-label>
+        <input
+          matInput
+          placeholder="landmark"
+          formControlName="landmark"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>city</mat-label>
+        <input matInput placeholder="city" formControlName="city" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>any query</mat-label>
+        <textarea
+          style="height: 100px"
+          matInput
+          required
+          formControlName="query"
+        ></textarea>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        class="mat-raised-green-button"
+        [disabled]="!userInfoFormGroup.valid"
+      >
+        <mat-spinner *ngIf="isLoading"> </mat-spinner>
+        SUBMIT
+      </button>
+    </form>
+  </div>
+</div>

@@ -12,7 +12,7 @@ export class FooterComponent implements OnInit {
   faEnvelope = faEnvelope;
   faBuilding = faBuilding;
   faMobileRetro = faMobileRetro;
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

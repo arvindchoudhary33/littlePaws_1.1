@@ -35,7 +35,7 @@ import { PetcareComponent } from './components/petcare/petcare.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
-
+import { MatBadgeModule } from '@angular/material/badge';
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import {
@@ -52,6 +52,9 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { PutForAdoptionComponent } from './components/put-for-adoption/put-for-adoption.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { PetInfoComponent } from './components/put-for-adoption/child/pet-info/pet-info.component';
+import { MoreInfoComponent } from './components/all-pets/child/more-info/more-info.component';
+import { NotificationComponent } from './components/all-pets/child/notification/notification.component';
+import { InterestedInfoComponent } from './components/interested-info/interested-info.component';
 
 @NgModule({
   declarations: [
@@ -72,8 +75,11 @@ import { PetInfoComponent } from './components/put-for-adoption/child/pet-info/p
     PrevDirective,
     PutForAdoptionComponent,
     PetInfoComponent,
+    MoreInfoComponent,
+    NotificationComponent,
+    InterestedInfoComponent,
   ],
-  entryComponents: [SignUpComponent, LoginComponent],
+  entryComponents: [SignUpComponent, LoginComponent, MoreInfoComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -87,6 +93,7 @@ import { PetInfoComponent } from './components/put-for-adoption/child/pet-info/p
     MatIconModule,
     MatMenuModule,
     MatInputModule,
+    MatBadgeModule,
     MatDividerModule,
     FontAwesomeModule,
     MatDialogModule,

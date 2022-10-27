@@ -9,6 +9,7 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
 import { FaqComponent } from './components/faq/faq.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { HomeComponent } from './components/home/home.component';
+import { InterestedInfoComponent } from './components/interested-info/interested-info.component';
 import { PetcareComponent } from './components/petcare/petcare.component';
 import { PutForAdoptionComponent } from './components/put-for-adoption/put-for-adoption.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
@@ -34,6 +35,11 @@ const routes: Routes = [
   {
     path: 'put-for-adoption',
     component: PutForAdoptionComponent,
+    canActivate: [UserAuthGuardService],
+  },
+  {
+    path: 'interested-info',
+    component: InterestedInfoComponent,
     canActivate: [UserAuthGuardService],
   },
   { path: 'forgot-password', component: ForgotPasswordComponent },

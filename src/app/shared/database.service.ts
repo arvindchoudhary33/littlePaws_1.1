@@ -8,6 +8,8 @@ import {
   collection,
   Firestore,
   updateDoc,
+  arrayUnion,
+  getDoc,
   query,
   addDoc,
   doc,
@@ -20,7 +22,17 @@ import { BehaviorSubject, empty, Observable, Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { petsInfo } from '../model/commonInterfaces';
+import { InterestedInfoComponent } from '../components/interested-info/interested-info.component';
 
+
+export interface interestedInfo {
+  city: '',
+  landmark: '',
+  name: '',
+  petsOwnerID: '',
+  phoneNumber: '',
+  query: ''
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -45,37 +57,6 @@ export class DatabaseService implements OnInit {
       panelClass: ['green-snack-bar'],
     });
   }
-  // unsubscribe: any;
-  // fetchAllPets(tags: string[]) {
-  //   const q = query(
-  //     collection(this.fStore_, 'petsForAdoption'),
-  //     where('tags', 'array-contains-any', tags)
-  //   );
-  //   const allData: any = [];
-  //   const unsubscribe = onSnapshot(q, (snapshot) => {
-  //     snapshot.docChanges().forEach((change) => {
-  //       if (change.type === 'added') {
-  //         allData.push(change.doc.data());
-  //         this.anyChange.next(true);
-  //         console.log('New city: ', change.doc.data());
-  //       }
-  //       if (change.type === 'modified') {
-  //         console.log('Modified city: ', change.doc.data());
-  //       }
-  //       if (change.type === 'removed') {
-  //         console.log('Removed city: ', change.doc.data());
-  //       }
-  //       return change.doc.data();
-  //     });
-  //   });
-  //   return allData;
-  //   this.unsubscribe;
-  // }
-  //
-
-  // async getCurrentUser(): Promise<User | undefined> {
-  //      return await this.auth.currentUser;
-  //  }
   async getAllData(tags: string[], catOrDogFilter: string) {
     let allQ = query(collection(this.fStore_, 'petsForAdoption'));
     let docsSnap;
@@ -96,8 +77,10 @@ export class DatabaseService implements OnInit {
     docsSnap = await getDocs(q);
     const allData: any = [];
     docsSnap.forEach((doc) => {
-      allData.push(doc.data());
-      return doc.data();
+      let obj = doc.data();
+      Object.assign(obj, { documentID: doc.id });
+      allData.push(obj);
+      return obj;
     });
     return allData;
   }
@@ -117,7 +100,7 @@ export class DatabaseService implements OnInit {
       adopted: "false",
       uid: localStorage.getItem('uid'),
     });
-    if (docRef.id) {
+    if (docRef.id != "") {
       this.openSnackBar('Added Successfully');
       return true;
     }
@@ -144,6 +127,8 @@ export class DatabaseService implements OnInit {
     }
     return false;
   }
+
+
 
   async addContactUsInfo(data: any) {
     const docRef = await addDoc(
@@ -173,6 +158,70 @@ export class DatabaseService implements OnInit {
       })
       .catch((e) => {
         this.openSnackBar(e.message);
+        return false;
+      });
+  }
+
+
+  async updateNotification(id: string, interestedUserID: string) {
+    const docRef = doc(this.fStore_, 'petsForAdoption', id);
+    await updateDoc(docRef, {
+      notificationID: arrayUnion(interestedUserID)
+    })
+  }
+
+  async fetchSpecificPetsData(id: string) {
+    const docRef = doc(this.fStore_, "petsForAdoption", id)
+    const docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      return docSnap.data();
+    }
+    else return false;
+  }
+
+  async fetchInterestedUsers() {
+    let notifications;
+    let data: petsInfo;
+    let id = String(localStorage.getItem('uid'))
+    const docRef = doc(this.fStore_, "petsForAdoption", id)
+    const docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      data = Object(docSnap.data());
+    }
+
+    // const q = query(
+    //   collection(this.fStore_, 'interestedUsersInfo'),
+    //   orderBy("date"),
+    //   where('', 'in', localStorage.getItem('uid'))
+    // );
+    // const querySnapshot = await getDocs(q);
+    // querySnapshot.forEach((doc) => {
+    //   let obj = doc.data();
+    //   Object.assign(obj, { documentID: doc.id });
+    //   fetchedPetsInfo.push(Object(obj));
+    // });
+    //               ) 
+    // const q = query(
+    //   collection(this.fStore_, 'interestedUsersInfo', id)
+    //   orderBy('date'),
+    //   where('petsOwnerID')
+    //
+    // )
+  }
+
+  async addInterestedUserInfo(data: any) {
+    const docRef = await addDoc(
+      collection(this.fStore_, 'interestedUsersInfo'),
+      data
+    )
+      .then((docRef) => {
+        this.updateNotification(data.petsOwnerID, docRef.id)
+        this.openSnackBar('Submitted successfully');
+        return true;
+      })
+      .catch((error) => {
+        this.openSnackBar(error.message);
+        console.log(error);
         return false;
       });
   }

@@ -4,7 +4,8 @@ import { AuthService } from 'src/app/shared/auth.service';
 import { DatabaseService } from 'src/app/shared/database.service';
 import { petsInfo } from '../../model/commonInterfaces';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-
+import { MatDialog } from '@angular/material/dialog';
+import { MoreInfoComponent } from './child/more-info/more-info.component';
 @Component({
   selector: 'app-all-pets',
   templateUrl: './all-pets.component.html',
@@ -12,11 +13,20 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 })
 export class AllPetsComponent implements OnInit {
   catOrDogRadioFilter: string = 'dog';
-  constructor(private auth: AuthService, private database: DatabaseService) { }
+  constructor(
+    private auth: AuthService,
+    private database: DatabaseService,
+    private dialog: MatDialog
+  ) {}
   allPets: petsInfo[] = [];
   tagQuery: string[] = [];
   ngOnInit(): void {
     this.getAllData([], 'dog');
+  }
+
+  openDialog(pets: any) {
+    // console.log(id)
+    this.dialog.open(MoreInfoComponent, { data: { pets: pets } });
   }
 
   getAllData(tags: string[], catOrDogRadioFilter: string) {
