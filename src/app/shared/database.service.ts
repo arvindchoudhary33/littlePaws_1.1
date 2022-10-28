@@ -37,6 +37,9 @@ export interface interestedInfo {
   providedIn: 'root',
 })
 export class DatabaseService implements OnInit {
+  notificationsChangeSubject: Subject<String> = new BehaviorSubject<String>(
+    ''
+  );
   allPutForAdoptionPetsData: Subject<petsInfo[]> = new BehaviorSubject<
     petsInfo[]
   >([]);
@@ -48,7 +51,10 @@ export class DatabaseService implements OnInit {
     private fAuth: AngularFireAuth,
     private fStore_: Firestore,
     private _snackBar: MatSnackBar
-  ) { }
+  ) {
+    localStorage.setItem('currNotificationCount', '0');
+    localStorage.setItem('prevNotificationCount', '0');
+  }
 
   ngOnInit() { }
 
@@ -109,6 +115,7 @@ export class DatabaseService implements OnInit {
   }
 
   async fetchAllPetsForUser() {
+    // this.checkForNotificationChange()
     let fetchedPetsInfo: petsInfo[] = [];
     const q = query(
       collection(this.fStore_, 'petsForAdoption'),
@@ -170,21 +177,38 @@ export class DatabaseService implements OnInit {
   }
 
   async fetchInterestedUsers() {
+    this.allNotifications = [];
     let allData: any;
     const q = query(
       collection(this.fStore_, 'interestedUsersInfo'),
-      orderBy('date'),
+      orderBy('date', 'desc'),
       where('petsOwnerID', '==', localStorage.getItem('uid'))
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       allData = doc.data();
-      console.log("hmm", doc.data())
       Object.assign(allData, { interestedUserID: doc.id });
       this.allNotifications.push(allData);
-      // console.log(doc.data());
     });
-    console.log("fgsdfg", this.allNotifications)
+
+    return this.allNotifications.length;
+  }
+
+  checkForNotificationChange() {
+    let currCount;
+    this.fetchInterestedUsers().then(value => {
+      currCount = Number(value)
+
+      let prevCount = Number(localStorage.getItem('prevNotificationCount'));
+      console.log("please", currCount, prevCount)
+      if (currCount !== prevCount) {
+        localStorage.setItem('prevNotificationCount', String(currCount));
+        currCount = Math.abs(prevCount - currCount);
+        this.notificationsChangeSubject.next(String(currCount));
+      }
+    })
+    console.log('currrrr', currCount)
+    return currCount;
   }
 
   async updateNotification(id: string, interestedUserID: string) {
@@ -201,6 +225,7 @@ export class DatabaseService implements OnInit {
       .then((docRef) => {
         this.updateNotification(data.petsInfoID, docRef.id);
         this.openSnackBar('Submitted successfully');
+        this.checkForNotificationChange()
         return true;
       })
       .catch((error) => {

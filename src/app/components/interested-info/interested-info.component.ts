@@ -16,7 +16,7 @@ export class InterestedInfoComponent implements OnInit {
     private route: ActivatedRoute,
     private database: DatabaseService,
     private common: CommonService
-  ) {}
+  ) { }
   // id: any;
 
   ngOnInit(): void {
@@ -58,10 +58,10 @@ export class InterestedInfoComponent implements OnInit {
     date: new FormControl(
       String(
         this.currDate.getDate() +
-          '-' +
-          this.currDate.getMonth() +
-          '-' +
-          this.currDate.getFullYear()
+        '-' +
+        this.currDate.getMonth() +
+        '-' +
+        this.currDate.getFullYear()
       )
     ),
   });
@@ -81,6 +81,7 @@ export class InterestedInfoComponent implements OnInit {
       petPictureURL: this.interestedPetInfo.petPictureURL,
     });
     this.isLoading = true;
+    this.userInfoFormGroup.invalid
     this.database.addInterestedUserInfo(data).then((value) => {
       this.isLoading = Boolean(value);
       this.clearForm();

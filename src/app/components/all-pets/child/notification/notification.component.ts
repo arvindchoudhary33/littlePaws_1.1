@@ -13,8 +13,11 @@ export class NotificationComponent implements OnInit {
   constructor(private database: DatabaseService) {}
 
   ngOnInit(): void {
-    console.log(this.allNotifications);
     this.allNotifications = this.database.allNotifications;
     console.log('dfadf', this.database.allNotifications);
+  }
+
+  refreshNotifications() {
+    this.database.checkForNotificationChange();
   }
 }

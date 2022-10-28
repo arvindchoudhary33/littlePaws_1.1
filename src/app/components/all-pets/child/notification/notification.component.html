@@ -11,13 +11,14 @@
         (opened)="panelOpenState = true"
         (closed)="panelOpenState = false"
       >
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header class="notification-expansion-panel-header">
           <mat-panel-title class="notification-expansion-panel-title">
             <span>Adoption request for :</span>
             <img src="{{ v.petPictureURL }}" />
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-panel-description class="expansion-panel-desc">
+          <p><span>Date : </span>{{ v.date }}</p>
           <p><span>Name :</span> {{ v.name }}</p>
           <p><span>Phone number :</span> {{ v.phoneNumber }}</p>
           <p><span>Query : </span>{{ v.query }}</p>
@@ -27,5 +28,13 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button color="warn">CLOSE</button>
+    <button
+      (click)="refreshNotifications()"
+      mat-raised-button
+      class="mat-raised-green-button"
+      style="padding-left: 5px; padding-right: 5px"
+    >
+      REFRESH
+    </button>
   </mat-dialog-actions>
 </div>

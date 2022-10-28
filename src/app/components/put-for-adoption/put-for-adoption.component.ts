@@ -73,7 +73,6 @@ export class PutForAdoptionComponent implements OnInit {
     );
   }
   ngOnInit(): void {
-    this.fetchAllPetsData();
     this.allPetsData = this.database.allPutForAdoptionPetsData.subscribe(
       (value) => {
         return value;

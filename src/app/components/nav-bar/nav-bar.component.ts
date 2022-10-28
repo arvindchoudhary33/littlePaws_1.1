@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
@@ -20,7 +20,7 @@ import { DatabaseService } from 'src/app/shared/database.service';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent implements OnInit, AfterViewInit {
   faBell = faBell;
   faUsers = faUsers;
   faHouseChimneyWindow = faHouseChimneyWindow;
@@ -28,7 +28,7 @@ export class NavBarComponent implements OnInit {
   faCat = faCat;
   faShieldDog = faShieldDog;
   faQuestion = faCircleQuestion;
-  numberOfNotification = '';
+  numberOfNotification: any;
   isUserLoggedIn: boolean = Boolean(
     localStorage.getItem('token') && localStorage.getItem('isEmailVerified')
   );
@@ -40,47 +40,26 @@ export class NavBarComponent implements OnInit {
     private userauth: AuthService,
     private dialog: MatDialog,
     private database: DatabaseService
-  ) {}
+  ) { }
 
+  ngAfterViewInit(): void { }
   ngOnInit(): void {
-    this.database.fetchInterestedUsers();
+    this.database.checkForNotificationChange();
+    this.database.notificationsChangeSubject.subscribe((value) => {
+      console.log('whyyyyyy', value);
+      this.numberOfNotification = String(value);
+    });
     // subscribing to user logged in var to change the sign-in/ logout button at top right
     this.userauth.isLogged.subscribe((isLogged) => {
       console.log(isLogged);
       this.isUserLoggedIn = Boolean(isLogged);
     });
-    // if (localStorage.getItem('isNotificationSeen') != null) {
-    //
-    //   localStorage.setItem('isNotificationSeen', 'false');
-    //
-    //   this.numberOfNotification = String(this.database.allNotifications.length);
-    // }
-    // localStorage.setItem('currentNotificationLength', '');
 
-    // if (
-    //   nt !=
-    //   Number(localStorage.getItem('currentNotificationLength'))
-    // ) {
-    //   this.numberOfNotification = String(
-    //     Math.abs(
-    //       Number(this.numberOfNotification) -
-    //       Number(localStorage.getItem('currentNotificationLength'))
-    //     )
-    //   );
-    // } else {
-    //   this.numberOfNotification = '';
-    // }
-    // this.database.fetchInterestedUsers().then((value) => {
-    //   console.log('coming');
-    //   if (Boolean(localStorage.getItem('isNotificationSeen')) !== true) {
-    //     console.log('here');
-    //     this.numberOfNotification = value.length;
-    //   }
-    // });
+    // subscribing to notification change
   }
 
   openNotificationsDialog() {
-    localStorage.setItem('isNotificationSeen', 'true');
+    // localStorage.setItem('isNotificationSeen', 'true');
     this.numberOfNotification = '';
     this.dialog.open(NotificationComponent);
   }
@@ -89,8 +68,7 @@ export class NavBarComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('isNotificationSeen');
-    localStorage.removeItem('currentNotificationLength');
+    // localStorage.setItem('isNotificationSeen', 'false');
     this.userauth.logout();
   }
 }

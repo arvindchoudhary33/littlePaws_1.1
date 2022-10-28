@@ -2,12 +2,12 @@
   display: grid;
   row-gap: 10px;
   padding: 5px;
+  min-width: 50vw;
 }
 .accordion {
   width: 100%;
 }
 .notification-expansion-panel {
-  padding: 10px;
   span {
     font-weight: bold;
   }
@@ -15,13 +15,24 @@
     width: 50px;
     height: 50px;
     border-radius: 4px;
+    border: 1px solid lightgray;
+    margin: 5px;
   }
+}
+
+.notification-expansion-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  height: 60px;
 }
 
 .notification-expansion-panel-title {
   display: flex;
   justify-content: space-around;
 }
+
 .expansion-panel-desc {
   display: flex;
   flex-direction: column;
