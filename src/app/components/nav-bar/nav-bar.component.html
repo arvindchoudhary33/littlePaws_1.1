@@ -12,6 +12,7 @@
       matBadgeSize="small"
       matBadgeColor="warn"
       class="notification-icon"
+      *ngIf="isUserLoggedIn"
     >
       <fa-icon [icon]="faBell" (click)="openNotificationsDialog()"></fa-icon>
     </div>

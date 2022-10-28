@@ -17,7 +17,7 @@ export class AllPetsComponent implements OnInit {
     private auth: AuthService,
     private database: DatabaseService,
     private dialog: MatDialog
-  ) {}
+  ) { }
   allPets: petsInfo[] = [];
   tagQuery: string[] = [];
   ngOnInit(): void {

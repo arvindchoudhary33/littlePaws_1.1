@@ -6,6 +6,7 @@ import { getAuth } from 'firebase/auth';
 
 import {
   collection,
+  documentId,
   Firestore,
   updateDoc,
   arrayUnion,
@@ -24,14 +25,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { petsInfo } from '../model/commonInterfaces';
 import { InterestedInfoComponent } from '../components/interested-info/interested-info.component';
 
-
 export interface interestedInfo {
-  city: '',
-  landmark: '',
-  name: '',
-  petsOwnerID: '',
-  phoneNumber: '',
-  query: ''
+  city: '';
+  landmark: '';
+  name: '';
+  petsOwnerID: '';
+  phoneNumber: '';
+  query: '';
 }
 @Injectable({
   providedIn: 'root',
@@ -41,6 +41,7 @@ export class DatabaseService implements OnInit {
     petsInfo[]
   >([]);
   userID: any;
+  allNotifications: any[] = [];
   constructor(
     private authService: AuthService,
     private fStore: AngularFirestore,
@@ -97,10 +98,10 @@ export class DatabaseService implements OnInit {
       petPictureURL: petInfo.petPicture,
       searchTags: petInfo.searchTags,
       catOrDog: petInfo.catOrDog,
-      adopted: "false",
+      adopted: 'false',
       uid: localStorage.getItem('uid'),
     });
-    if (docRef.id != "") {
+    if (docRef.id != '') {
       this.openSnackBar('Added Successfully');
       return true;
     }
@@ -111,8 +112,8 @@ export class DatabaseService implements OnInit {
     let fetchedPetsInfo: petsInfo[] = [];
     const q = query(
       collection(this.fStore_, 'petsForAdoption'),
-      orderBy("adopted"),
-      orderBy("date"),
+      orderBy('adopted'),
+      orderBy('date'),
       where('uid', '==', localStorage.getItem('uid'))
     );
     const querySnapshot = await getDocs(q);
@@ -127,8 +128,6 @@ export class DatabaseService implements OnInit {
     }
     return false;
   }
-
-
 
   async addContactUsInfo(data: any) {
     const docRef = await addDoc(
@@ -162,60 +161,45 @@ export class DatabaseService implements OnInit {
       });
   }
 
+  async fetchSpecificPetsData(id: string) {
+    const docRef = doc(this.fStore_, 'petsForAdoption', id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else return false;
+  }
+
+  async fetchInterestedUsers() {
+    let allData: any;
+    const q = query(
+      collection(this.fStore_, 'interestedUsersInfo'),
+      orderBy('date'),
+      where('petsOwnerID', '==', localStorage.getItem('uid'))
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      allData = doc.data();
+      console.log("hmm", doc.data())
+      Object.assign(allData, { interestedUserID: doc.id });
+      this.allNotifications.push(allData);
+      // console.log(doc.data());
+    });
+    console.log("fgsdfg", this.allNotifications)
+  }
 
   async updateNotification(id: string, interestedUserID: string) {
     const docRef = doc(this.fStore_, 'petsForAdoption', id);
     await updateDoc(docRef, {
-      notificationID: arrayUnion(interestedUserID)
-    })
+      notificationID: arrayUnion(interestedUserID),
+    });
   }
-
-  async fetchSpecificPetsData(id: string) {
-    const docRef = doc(this.fStore_, "petsForAdoption", id)
-    const docSnap = await getDoc(docRef)
-    if (docSnap.exists()) {
-      return docSnap.data();
-    }
-    else return false;
-  }
-
-  async fetchInterestedUsers() {
-    let notifications;
-    let data: petsInfo;
-    let id = String(localStorage.getItem('uid'))
-    const docRef = doc(this.fStore_, "petsForAdoption", id)
-    const docSnap = await getDoc(docRef)
-    if (docSnap.exists()) {
-      data = Object(docSnap.data());
-    }
-
-    // const q = query(
-    //   collection(this.fStore_, 'interestedUsersInfo'),
-    //   orderBy("date"),
-    //   where('', 'in', localStorage.getItem('uid'))
-    // );
-    // const querySnapshot = await getDocs(q);
-    // querySnapshot.forEach((doc) => {
-    //   let obj = doc.data();
-    //   Object.assign(obj, { documentID: doc.id });
-    //   fetchedPetsInfo.push(Object(obj));
-    // });
-    //               ) 
-    // const q = query(
-    //   collection(this.fStore_, 'interestedUsersInfo', id)
-    //   orderBy('date'),
-    //   where('petsOwnerID')
-    //
-    // )
-  }
-
   async addInterestedUserInfo(data: any) {
     const docRef = await addDoc(
       collection(this.fStore_, 'interestedUsersInfo'),
       data
     )
       .then((docRef) => {
-        this.updateNotification(data.petsOwnerID, docRef.id)
+        this.updateNotification(data.petsInfoID, docRef.id);
         this.openSnackBar('Submitted successfully');
         return true;
       })

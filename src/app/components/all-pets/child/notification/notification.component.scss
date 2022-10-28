@@ -1,0 +1,35 @@
+.notifications-main-container {
+  display: grid;
+  row-gap: 10px;
+  padding: 5px;
+}
+.accordion {
+  width: 100%;
+}
+.notification-expansion-panel {
+  padding: 10px;
+  span {
+    font-weight: bold;
+  }
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+  }
+}
+
+.notification-expansion-panel-title {
+  display: flex;
+  justify-content: space-around;
+}
+.expansion-panel-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  text-align: left;
+  p {
+    width: 100%;
+    text-align: left;
+  }
+}

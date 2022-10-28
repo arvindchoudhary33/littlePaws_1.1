@@ -1,1 +1,31 @@
-<p>notification works!</p>
+<div>
+  <h3 mat-dialog-title>Notifications</h3>
+  <mat-dialog-content class="notifications-main-container">
+    <mat-accordion
+      *ngFor="let v of allNotifications"
+      multi="false"
+      class="accordion"
+    >
+      <mat-expansion-panel
+        class="notification-expansion-panel"
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title class="notification-expansion-panel-title">
+            <span>Adoption request for :</span>
+            <img src="{{ v.petPictureURL }}" />
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-panel-description class="expansion-panel-desc">
+          <p><span>Name :</span> {{ v.name }}</p>
+          <p><span>Phone number :</span> {{ v.phoneNumber }}</p>
+          <p><span>Query : </span>{{ v.query }}</p>
+        </mat-panel-description>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button color="warn">CLOSE</button>
+  </mat-dialog-actions>
+</div>

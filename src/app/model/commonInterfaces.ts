@@ -10,6 +10,7 @@ interface petsInfo {
   catOrDog: string;
   adopted: string;
   documentID: string;
+  notificationID: string[],
 }
 
 export { petsInfo };

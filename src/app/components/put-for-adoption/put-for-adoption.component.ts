@@ -74,18 +74,18 @@ export class PutForAdoptionComponent implements OnInit {
   }
   ngOnInit(): void {
     this.fetchAllPetsData();
-    this.allPetsData = this.database.allPutForAdoptionPetsData.subscribe(value => {
-      return value
-    })
+    this.allPetsData = this.database.allPutForAdoptionPetsData.subscribe(
+      (value) => {
+        return value;
+      }
+    );
 
-    console.log("finally", this.allPetsData)
   }
 
   fetchAllPetsData() {
     this.fetchedPetsData = [];
     this.database.fetchAllPetsForUser();
     this.database.fetchAllPetsForUser().then((value) => {
-      console.log("called")
       this.fetchedPetsData.push(...(<[]>value));
     });
   }
@@ -141,6 +141,7 @@ export class PutForAdoptionComponent implements OnInit {
       )
     ),
     petPicture: this.petPicture,
+    notificationID: new FormGroup([], []),
   });
 
   onFileSelected(event: any) {
@@ -161,7 +162,6 @@ export class PutForAdoptionComponent implements OnInit {
             if (url) {
               this.fb = url;
             }
-            console.log('this is the thing ', this.fb);
             this.isSpinnerLoading = false;
             this.disable = true;
           });
@@ -187,13 +187,13 @@ export class PutForAdoptionComponent implements OnInit {
     let docRef;
     this.downloadURL?.subscribe((value) => {
       if (value) {
-        console.log(Object.assign(petInfo, { petPicture: this.fb }));
+        Object.assign(petInfo, { petPicture: this.fb });
         docRef = this.database.addPetForAdoption(petInfo);
         this.isSpinnerLoading = false;
         this.clearForm();
         this.tags = [];
         if (Boolean(docRef)) {
-          this.fetchAllPetsData()
+          this.fetchAllPetsData();
         }
       }
     });

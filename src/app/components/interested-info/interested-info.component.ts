@@ -16,17 +16,16 @@ export class InterestedInfoComponent implements OnInit {
     private route: ActivatedRoute,
     private database: DatabaseService,
     private common: CommonService
-  ) {
-
-  }
+  ) {}
   // id: any;
 
   ngOnInit(): void {
     this.interestedPetInfo = JSON.parse(this.common.getInterestedPetsInfo());
+
     if (this.interestedPetInfo == null) {
       console.log('please select a pet ');
     }
-    console.log(this.interestedPetInfo.documentID);
+
     // this.route.params.subscribe((params) => {
     //   this.id = params['id'];
     // });
@@ -48,10 +47,9 @@ export class InterestedInfoComponent implements OnInit {
   landmark = new FormControl('', [Validators.required]);
   city = new FormControl('', [Validators.required]);
   query = new FormControl('', [Validators.required]);
-  // petsOwnerID = new FormControl(String(this.interestedPetInfo.documentID), [])
-  currDate = new Date()
+  currDate = new Date();
+  // petsInfoID = new FormControl(this.interestedPetInfo.documentID, [])
   userInfoFormGroup = new FormGroup({
-
     name: this.name,
     phoneNumber: this.phoneNumber,
     landmark: this.landmark,
@@ -60,25 +58,32 @@ export class InterestedInfoComponent implements OnInit {
     date: new FormControl(
       String(
         this.currDate.getDate() +
-        '-' +
-        this.currDate.getMonth() +
-        '-' +
-        this.currDate.getFullYear()
-      ))
-    // petsOwnerID: this.petsOwnerID
+          '-' +
+          this.currDate.getMonth() +
+          '-' +
+          this.currDate.getFullYear()
+      )
+    ),
   });
 
-  submitUserInfo(data: any) {
-    Object.assign(data, { petsOwnerID: this.interestedPetInfo.documentID })
-    console.log("wwww", this.interestedPetInfo.documentID)
-    this.isLoading = true;
-    this.database.addInterestedUserInfo(data).then(value => {
-      this.isLoading = Boolean(value)
-    })
-    console.log(data);
+  clearForm() {
+    this.userInfoFormGroup.reset();
+    this.name.setErrors(null);
+    this.phoneNumber.setErrors(null);
+    this.city.setErrors(null);
+    this.landmark.setErrors(null);
+    this.query.setErrors(null);
   }
-
-
-
-
+  submitUserInfo(data: any) {
+    Object.assign(data, { petsInfoID: this.interestedPetInfo.documentID });
+    Object.assign(data, { petsOwnerID: this.interestedPetInfo.uid });
+    Object.assign(data, {
+      petPictureURL: this.interestedPetInfo.petPictureURL,
+    });
+    this.isLoading = true;
+    this.database.addInterestedUserInfo(data).then((value) => {
+      this.isLoading = Boolean(value);
+      this.clearForm();
+    });
+  }
 }
