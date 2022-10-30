@@ -29,8 +29,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { NextDirective } from './next.directive';
-import { PrevDirective } from './prev.directive';
 import { PetcareComponent } from './components/petcare/petcare.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -71,8 +69,6 @@ import { InterestedInfoComponent } from './components/interested-info/interested
     PetcareComponent,
     VerifyPasswordComponent,
     ForgotPasswordComponent,
-    NextDirective,
-    PrevDirective,
     PutForAdoptionComponent,
     PetInfoComponent,
     MoreInfoComponent,
@@ -118,4 +114,4 @@ import { InterestedInfoComponent } from './components/interested-info/interested
   providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -18,16 +18,22 @@ import { DatabaseService } from 'src/app/shared/database.service';
 export class PetInfoComponent implements OnInit {
   @Input() petsData: any[] = [];
   @Output() changeStatus = new EventEmitter<{}>();
-
-  constructor(private database: DatabaseService) {}
-
+  @Output() updatePetsInfoData = new EventEmitter<{}>();
+  constructor(private database: DatabaseService) { }
   panelOpenState = false;
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   changeAdoptionStatus(id: string) {
     this.changeStatus.emit({ id: id, adopted: 'true' });
-    // this.database.updateAdoptionStatus(id, 'true').then((value) => {
-    //   // this.fetchAllPetsData();
-    // });
+  }
+
+  updatePetsInfo(id: string) {
+    for (let i = 0; i < this.petsData.length; i++) {
+      if (this.petsData[i].documentID == id) {
+        console.log("chid", this.petsData[i])
+        this.updatePetsInfoData.emit(this.petsData[i]);
+      }
+    }
   }
 }

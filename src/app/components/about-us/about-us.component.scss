@@ -20,6 +20,10 @@ span {
   padding: 12px;
 }
 .about-us-info-data {
+  backdrop-filter: blur(4px);
+  padding: 5px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
   font-size: 1.5vw;
 }
 .about-us-image {

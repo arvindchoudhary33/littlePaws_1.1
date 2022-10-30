@@ -2,10 +2,13 @@
   display: grid;
   row-gap: 10px;
   padding: 5px;
-  min-width: 50vw;
+  min-width: 40vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .accordion {
-  width: 100%;
+  width: 90%;
 }
 .notification-expansion-panel {
   span {
@@ -30,7 +33,8 @@
 
 .notification-expansion-panel-title {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  gap: 10px;
 }
 
 .expansion-panel-desc {
@@ -42,5 +46,26 @@
   p {
     width: 100%;
     text-align: left;
+  }
+}
+
+.notification-action-buttons {
+  button {
+    padding: 10px;
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .notifications-main-container {
+    width: 60vw;
+  }
+}
+@media only screen and (max-width: 550px) {
+  .accordion {
+    width: 100%;
+  }
+  .notifications-main-container {
+    width: 80vw;
   }
 }

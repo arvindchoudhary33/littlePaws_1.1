@@ -43,6 +43,7 @@
         </mat-form-field>
         <div class="">
           <mat-radio-group
+            required
             class="radio-button-container"
             color="primary"
             formControlName="catOrDog"
@@ -60,7 +61,11 @@
         <div class="age-container">
           <mat-form-field appearance="outline">
             <mat-label>age / year</mat-label>
-            <mat-select [(ngModel)]="selectedYear" formControlName="ageInYear">
+            <mat-select
+              [(ngModel)]="selectedYear"
+              formControlName="ageInYear"
+              required
+            >
               <mat-option *ngFor="let year of year" [value]="year">
                 {{ year }}
               </mat-option>
@@ -71,6 +76,7 @@
           <mat-form-field appearance="outline">
             <mat-label>age / month</mat-label>
             <mat-select
+              required
               [(ngModel)]="selectedMonth"
               formControlName="ageInMonth"
             >
@@ -119,14 +125,16 @@
         <div class="file-upload-container">
           <input
             type="file"
-            #petPicture
+            #petPictureURL
             (change)="onFileSelected($event)"
-            name="petPicture"
-            formControlName="petPicture"
+            name="petPictureURL"
+            formControlName="petPictureURL"
           />
           <!-- <p class="custom-mat-hint">upload pet's image</p> -->
         </div>
+
         <button
+          *ngIf="!updateButtonVisible"
           mat-raised-button
           class="mat-raised-green-button"
           style="margin-top: 25px"
@@ -135,12 +143,42 @@
           <mat-spinner *ngIf="isSpinnerLoading"></mat-spinner>
           SUBMIT
         </button>
+        <button
+          *ngIf="updateButtonVisible"
+          mat-raised-button
+          color="primary"
+          style="margin-top: 25px"
+          [disabled]="isDisabled()"
+        >
+          <mat-spinner *ngIf="isSpinnerLoading"></mat-spinner>
+          UPDATE
+        </button>
+        <button
+          mat-raised-button
+          color="accent"
+          style="
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            margin-top: 5px;
+          "
+          type="reset"
+          (click)="reset()"
+        >
+          RESET
+        </button>
+        <p style="text-align: center">{{ isUploadingImageText }}</p>
       </form>
     </mat-card>
   </div>
   <div class="put-for-adoption-user-data-container">
     <app-pet-info
-      [petsData]="fetchedPetsData"
+      [petsData]="allPetsData"
+      (updatePetsInfoData)="updatePetsInfo($event)"
       (changeStatus)="changeAdoptionStatus($event)"
     ></app-pet-info>
   </div>

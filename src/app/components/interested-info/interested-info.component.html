@@ -1,6 +1,37 @@
 <div class="interested-info-main-container">
-  <div class="interested-info-sub-container">
-    {{ interestedPetInfo | json }}
+  <div *ngIf="!checkSameUserAdoption" class="interested-info-sub-container">
+    <p style="text-align: center">Interested pet</p>
+    <mat-divider
+      style="margin-bottom: 10px; padding-left: 0px; padding-right: 0px"
+    ></mat-divider>
+    <div class="interested-pets-info">
+      <img [src]="interestedPetInfo.petPictureURL" />
+      <div class="interested-pets-data">
+        <p>
+          Owner name : <span>{{ interestedPetInfo.ownerName }}</span>
+        </p>
+        <mat-divider></mat-divider>
+        <p>
+          Age :
+          <span
+            >{{ interestedPetInfo.ageInYear }} Year
+            {{ interestedPetInfo.ageInMonth }} Month</span
+          >
+        </p>
+        <mat-divider></mat-divider>
+        <p>
+          Adopted : <span>{{ interestedPetInfo.adopted }}</span>
+        </p>
+        <mat-divider></mat-divider>
+        <p>
+          Search tags : <span>{{ interestedPetInfo.searchTags }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="checkSameUserAdoption">
+    You cannot adopt this pet as this pet is
+    <span style="font-weight: bold">up for adoption </span>by your credentials.
   </div>
 
   <div class="user-info">
@@ -40,7 +71,7 @@
         <input matInput placeholder="city" formControlName="city" required />
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>any query</mat-label>
+        <mat-label>message</mat-label>
         <textarea
           style="height: 100px"
           matInput
@@ -51,7 +82,7 @@
       <button
         mat-raised-button
         class="mat-raised-green-button"
-        [disabled]="!userInfoFormGroup.valid"
+        [disabled]="!userInfoFormGroup.valid || checkSameUserAdoption"
       >
         <mat-spinner *ngIf="isLoading"> </mat-spinner>
         SUBMIT

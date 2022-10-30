@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DatabaseService } from 'src/app/shared/database.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
   minPassLength = 8;
   isSpinnerLoading?: boolean;
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private database: DatabaseService) { }
 
   emailFormControl = new FormControl('arvindchoudhary.in.connect@gmail.com', [
     Validators.required,

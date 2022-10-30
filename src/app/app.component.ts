@@ -6,4 +6,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent {
   title = 'littlePaws_1.1';
+  constructor() {
+  }
 }

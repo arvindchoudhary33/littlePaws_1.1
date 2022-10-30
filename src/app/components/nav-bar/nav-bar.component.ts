@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import {
   faUsers,
   faHouseChimneyWindow,
   faPhone,
+  faUser,
   faCat,
   faShieldDog,
   faCircleQuestion,
@@ -22,6 +22,7 @@ import { DatabaseService } from 'src/app/shared/database.service';
 })
 export class NavBarComponent implements OnInit, AfterViewInit {
   faBell = faBell;
+  faUser = faUser;
   faUsers = faUsers;
   faHouseChimneyWindow = faHouseChimneyWindow;
   faPhone = faPhone;
@@ -34,7 +35,6 @@ export class NavBarComponent implements OnInit, AfterViewInit {
   );
   // :TODO change the var name to something more readable
   opened = false;
-
   displayRoutes: boolean = false;
   constructor(
     private userauth: AuthService,
@@ -42,9 +42,17 @@ export class NavBarComponent implements OnInit, AfterViewInit {
     private database: DatabaseService
   ) { }
 
+  email: any;
   ngAfterViewInit(): void { }
   ngOnInit(): void {
-    this.database.checkForNotificationChange();
+    this.database.fetchInterestedUsers()
+    localStorage.setItem('notificationsSeen', 'false');
+    this.database.getEmail();
+    this.database.currentUserEmail.subscribe((value) => {
+      console.log(value);
+      this.email = value;
+    });
+    // this.database.checkForNotificationChange();
     this.database.notificationsChangeSubject.subscribe((value) => {
       console.log('whyyyyyy', value);
       this.numberOfNotification = String(value);
@@ -59,9 +67,14 @@ export class NavBarComponent implements OnInit, AfterViewInit {
   }
 
   openNotificationsDialog() {
-    // localStorage.setItem('isNotificationSeen', 'true');
     this.numberOfNotification = '';
-    this.dialog.open(NotificationComponent);
+    let dialogRef = this.dialog.open(NotificationComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('what', localStorage.getItem('prevNotificationCount'));
+      this.database.seenNotificationsCount.next(
+        Number(localStorage.getItem('prevNotificationCount'))
+      );
+    });
   }
   toggleSideNav() {
     this.opened = !this.opened;
@@ -69,6 +82,9 @@ export class NavBarComponent implements OnInit, AfterViewInit {
 
   logout() {
     // localStorage.setItem('isNotificationSeen', 'false');
+    localStorage.clear();
+    localStorage.removeItem('uid');
+    localStorage.removeItem('prevNotificationCount');
     this.userauth.logout();
   }
 }

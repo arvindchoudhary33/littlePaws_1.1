@@ -2,7 +2,8 @@ interface petsInfo {
   ownerName: string;
   phoneNumber: string;
   date: string;
-  age: string;
+  ageInMonth: string;
+  ageInYear: string;
   isSpayedNeuter: string;
   searchTags: string[];
   petPictureURL: string;
@@ -10,7 +11,6 @@ interface petsInfo {
   catOrDog: string;
   adopted: string;
   documentID: string;
-  notificationID: string[],
 }
 
 export { petsInfo };

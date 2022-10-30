@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { getAuth } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
 
 // import { NavBarComponent } from '../components/nav-bar/nav-bar.component';
 // import { SignUpComponent } from '../components/sign-up/sign-up.component';
@@ -21,25 +21,24 @@ export class AuthService implements OnInit {
   );
 
   auth = getAuth();
-  user = this.auth.currentUser?.uid
-  currentUserID: Subject<String> = new BehaviorSubject<String>(String(this.user));
+  user = this.auth.currentUser?.uid;
+  currentUserID: Subject<String> = new BehaviorSubject<String>(
+    String(this.user)
+  );
   constructor(
     private fireauth: AngularFireAuth,
     private router: Router,
     private _snackBar: MatSnackBar,
     private fStore: AngularFirestore
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
     this.isLogged.next(
       Boolean(
-
         localStorage.getItem('token') && localStorage.getItem('isEmailVerified')
       )
     );
-    console.log("auth", this.isLogged)
+    console.log('auth', this.isLogged);
   }
 
   openSnackBar(message: any) {
@@ -48,6 +47,10 @@ export class AuthService implements OnInit {
     });
   }
 
+  getEmail() {
+    console.log(getAuth().currentUser?.email);
+    return getAuth().currentUser?.email;
+  }
   // Login method
   login(email: string, password: string) {
     this.isLoading.next(true);
@@ -68,7 +71,7 @@ export class AuthService implements OnInit {
             uid: res.user?.uid,
             email: res.user?.email,
           });
-          localStorage.setItem('uid', String(res.user?.uid))
+          localStorage.setItem('uid', String(res.user?.uid));
         } else {
           this.router.navigate(['/verify-email']);
         }
@@ -89,10 +92,10 @@ export class AuthService implements OnInit {
       (res) => {
         localStorage.setItem('token', 'false');
         localStorage.setItem('isUserLoggedIn', 'false');
-        localStorage.setItem('uid', String(res.user?.uid))
+        localStorage.setItem('uid', String(res.user?.uid));
         this.router.navigate(['/sign-up']);
         this.sendEmailVerification(res.user);
-        console.log("register", res.user);
+        console.log('register', res.user);
         this.currentUserID.next(String(res.user?.uid));
         this.isLoading.next(false);
       },
@@ -108,7 +111,7 @@ export class AuthService implements OnInit {
     this.fireauth.signOut().then(
       () => {
         this.currentUserID.next('');
-        localStorage.removeItem('uid')
+        localStorage.removeItem('uid');
         localStorage.removeItem('token');
         this.isLogged.next(false);
         this.router.navigate(['/sign-up']);

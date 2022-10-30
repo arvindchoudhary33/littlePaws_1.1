@@ -34,7 +34,7 @@ $my-theme: mat.define-light-theme(
 .mat-raised-green-button {
   background: map-get(v.$green-palette, 500);
   display: flex;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   text-align: center;
 }
 
@@ -72,6 +72,14 @@ $my-theme: mat.define-light-theme(
 }
 .green-snack-bar {
   background: map-get(v.$green-palette, 600);
+}
+
+.mat-card {
+  /* background-color: none; */
+  /* background: none !important; */
+}
+.red-snack-bar {
+  background: map-get(v.$red-palette, 500);
 }
 .mat-divider {
 }

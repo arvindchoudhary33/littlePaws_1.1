@@ -13,30 +13,36 @@ import { MoreInfoComponent } from './child/more-info/more-info.component';
 })
 export class AllPetsComponent implements OnInit {
   catOrDogRadioFilter: string = 'dog';
+  allPets: any = [];
+  tagQuery: string[] = [];
   constructor(
     private auth: AuthService,
     private database: DatabaseService,
     private dialog: MatDialog
-  ) { }
-  allPets: petsInfo[] = [];
-  tagQuery: string[] = [];
+  ) {}
   ngOnInit(): void {
     this.getAllData([], 'dog');
+    this.database.allPetsDataSubject.subscribe((value) => {
+      console.log('empty', value);
+      this.allPets = value;
+    });
   }
 
   openDialog(pets: any) {
     // console.log(id)
     this.dialog.open(MoreInfoComponent, { data: { pets: pets } });
   }
+  clearTags() {
+    this.tagQuery = [];
+  }
 
+  radioButtonClick() {
+    this.clearTags();
+  }
   getAllData(tags: string[], catOrDogRadioFilter: string) {
-    this.allPets = [];
-    this.database.getAllData(tags, this.catOrDogRadioFilter).then((value) => {
-      value.forEach((elements: Object) => {
-        this.allPets.push(Object(elements));
-      });
-      console.log(this.allPets);
-    });
+    console.log(catOrDogRadioFilter);
+    this.database.getAllData(tags, catOrDogRadioFilter);
+    console.log(this.allPets);
   }
 
   addOnBlur = true;

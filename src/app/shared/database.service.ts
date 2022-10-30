@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { AngularFirestore, Query } from '@angular/fire/compat/firestore';
 import { AuthService } from './auth.service';
-// import { Auth } from '@angular/fire/auth';
 import { getAuth } from 'firebase/auth';
 
 import {
@@ -37,12 +36,16 @@ export interface interestedInfo {
   providedIn: 'root',
 })
 export class DatabaseService implements OnInit {
-  notificationsChangeSubject: Subject<String> = new BehaviorSubject<String>(
-    ''
+  seenNotificationsCount: Subject<Number> = new BehaviorSubject<Number>(0);
+  notificationsChangeSubject: Subject<String> = new BehaviorSubject<String>('');
+  allNotificationsSubject: Subject<Object[]> = new BehaviorSubject<Object[]>(
+    []
   );
   allPutForAdoptionPetsData: Subject<petsInfo[]> = new BehaviorSubject<
     petsInfo[]
   >([]);
+  allPetsDataSubject: Subject<Object[]> = new BehaviorSubject<Object[]>([]);
+  currentUserEmail: Subject<String> = new BehaviorSubject<String>('');
   userID: any;
   allNotifications: any[] = [];
   constructor(
@@ -52,7 +55,6 @@ export class DatabaseService implements OnInit {
     private fStore_: Firestore,
     private _snackBar: MatSnackBar
   ) {
-    localStorage.setItem('currNotificationCount', '0');
     localStorage.setItem('prevNotificationCount', '0');
   }
 
@@ -64,6 +66,14 @@ export class DatabaseService implements OnInit {
       panelClass: ['green-snack-bar'],
     });
   }
+
+  openSnackBarCustom(message: any, color: any) {
+    this._snackBar.open(message, 'Cancel', {
+      duration: 3000,
+      panelClass: [color],
+    });
+  }
+
   async getAllData(tags: string[], catOrDogFilter: string) {
     let allQ = query(collection(this.fStore_, 'petsForAdoption'));
     let docsSnap;
@@ -72,40 +82,61 @@ export class DatabaseService implements OnInit {
       q = query(
         collection(this.fStore_, 'petsForAdoption'),
         where('searchTags', 'array-contains-any', tags),
-        where('catOrDog', '==', catOrDogFilter)
+        where('catOrDog', '==', catOrDogFilter),
+        where('adopted', '==', 'false')
       );
     } else {
+      console.log('calling here');
       q = query(
         collection(this.fStore_, 'petsForAdoption'),
-        where('catOrDog', '==', catOrDogFilter)
+        where('catOrDog', '==', catOrDogFilter),
+        where('adopted', '==', 'false')
       );
-      // docsSnap = await getDocs(allQ);
     }
-    docsSnap = await getDocs(q);
-    const allData: any = [];
-    docsSnap.forEach((doc) => {
-      let obj = doc.data();
-      Object.assign(obj, { documentID: doc.id });
-      allData.push(obj);
-      return obj;
+    onSnapshot(q, (querySnapshot) => {
+      const allData: any = [];
+      if (querySnapshot.empty) {
+        this.openSnackBarCustom(
+          'No data found for the search',
+          'red-snack-bar'
+        );
+        this.allPetsDataSubject.next([]);
+      }
+      querySnapshot.forEach((doc) => {
+        console.log('am here');
+        let obj = doc.data();
+        console.log('empty', doc.data());
+        Object.assign(obj, { documentID: doc.id });
+        allData.push(obj);
+        // if (allData == []) {
+        //   this.allPetsDataSubject.next([])
+        // }
+        this.allPetsDataSubject.next(allData);
+      });
     });
-    return allData;
+    // docsSnap = await getDocs(q);
+    // const allData: any = [];
+    // docsSnap.forEach((doc) => {
+    //   let obj = doc.data();
+    //   Object.assign(obj, { documentID: doc.id });
+    //   allData.push(obj);
+    //   return obj;
+    // });
+    // return allData;
   }
 
   async addPetForAdoption(petInfo: any) {
     const docRef = await addDoc(collection(this.fStore_, 'petsForAdoption'), {
       ownerName: petInfo.ownerName,
       phoneNumber: petInfo.phoneNumber,
-      age: String(
-        petInfo.ageInYear + ' year ' + petInfo.ageInMonth + ' month '
-      ),
+      ageInMonth: petInfo.ageInMonth,
+      ageInYear: petInfo.ageInYear,
       date: petInfo.date,
-      isSpayedNeuter: petInfo.isSpayedNeuter,
-      petPictureURL: petInfo.petPicture,
+      petPictureURL: petInfo.petPictureURL,
       searchTags: petInfo.searchTags,
       catOrDog: petInfo.catOrDog,
       adopted: 'false',
-      uid: localStorage.getItem('uid'),
+      uid: petInfo.uid,
     });
     if (docRef.id != '') {
       this.openSnackBar('Added Successfully');
@@ -115,7 +146,6 @@ export class DatabaseService implements OnInit {
   }
 
   async fetchAllPetsForUser() {
-    // this.checkForNotificationChange()
     let fetchedPetsInfo: petsInfo[] = [];
     const q = query(
       collection(this.fStore_, 'petsForAdoption'),
@@ -123,17 +153,27 @@ export class DatabaseService implements OnInit {
       orderBy('date'),
       where('uid', '==', localStorage.getItem('uid'))
     );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      let obj = doc.data();
-      Object.assign(obj, { documentID: doc.id });
-      fetchedPetsInfo.push(Object(obj));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      fetchedPetsInfo = [];
+      querySnapshot.forEach((doc) => {
+        let obj = doc.data();
+        Object.assign(obj, { documentID: doc.id });
+        fetchedPetsInfo.push(Object(obj));
+      });
+      console.log('issue', fetchedPetsInfo);
+      this.allPutForAdoptionPetsData.next(fetchedPetsInfo);
     });
-    this.allPutForAdoptionPetsData.next(Object(this.fetchAllPetsForUser));
+    // const querySnapshot = await getDocs(q);
+    // querySnapshot.forEach((doc) => {
+    //   let obj = doc.data();
+    //   Object.assign(obj, { documentID: doc.id });
+    //   fetchedPetsInfo.push(Object(obj));
+    // });
     if (fetchedPetsInfo.length > 0) {
       return fetchedPetsInfo;
     }
-    return false;
+    return [];
   }
 
   async addContactUsInfo(data: any) {
@@ -168,53 +208,89 @@ export class DatabaseService implements OnInit {
       });
   }
 
+  async updatePetsInfo(data: any, id: string) {
+    console.log('ippp', data);
+    const docRef = doc(this.fStore_, 'petsForAdoption', id);
+    await updateDoc(docRef, {
+      ownerName: data.ownerName,
+      searchTags: data.searchTags,
+      phoneNumber: data.phoneNumber,
+      ageInYear: data.ageInYear,
+      ageInMonth: data.ageInMonth,
+      petPictureURL: data.petPictureURL,
+      documentID: data.documentID,
+      date: data.date,
+    })
+      .then((value) => {
+        this.openSnackBar('Updated successfully');
+        // this.fetchAllPetsForUser();
+        return true;
+      })
+      .catch((e) => {
+        this.openSnackBar(e.message);
+        return false;
+      });
+  }
+
   async fetchSpecificPetsData(id: string) {
     const docRef = doc(this.fStore_, 'petsForAdoption', id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
-    } else return false;
+    }
+    return {};
   }
 
   async fetchInterestedUsers() {
-    this.allNotifications = [];
+    let allNotifications: any = [];
     let allData: any;
     const q = query(
       collection(this.fStore_, 'interestedUsersInfo'),
-      orderBy('date', 'desc'),
+      orderBy('date'),
       where('petsOwnerID', '==', localStorage.getItem('uid'))
     );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      allData = doc.data();
-      Object.assign(allData, { interestedUserID: doc.id });
-      this.allNotifications.push(allData);
+    onSnapshot(q, (querySnapshot) => {
+      allNotifications = [];
+      querySnapshot.forEach((doc) => {
+        allData = doc.data()
+        // this.fetchSpecificPetsData(doc.data()['petsInfoID']).then((value) => {
+        //   allData = doc.data();
+        //   console.log("returnnn", value)
+        //   if (value['adopted'] == 'false') {
+        //     console.log("all", allNotifications)
+        //   }
+        // });
+        Object.assign(allData, { interestedUserID: doc.id });
+        allNotifications.push(allData);
+      });
+      this.checkForNotificationChange(allNotifications.length);
+      this.allNotificationsSubject.next(allNotifications);
     });
-
-    return this.allNotifications.length;
+    return allNotifications.length;
   }
 
-  checkForNotificationChange() {
-    let currCount;
-    this.fetchInterestedUsers().then(value => {
-      currCount = Number(value)
-
-      let prevCount = Number(localStorage.getItem('prevNotificationCount'));
-      console.log("please", currCount, prevCount)
-      if (currCount !== prevCount) {
-        localStorage.setItem('prevNotificationCount', String(currCount));
-        currCount = Math.abs(prevCount - currCount);
-        this.notificationsChangeSubject.next(String(currCount));
+  checkForNotificationChange(currCount: any) {
+    let prev;
+    let curr;
+    this.seenNotificationsCount.subscribe((value) => {
+      prev = value;
+      curr = Math.abs(Number(currCount) - Number(prev));
+      if (curr === 0) {
+        console.log('curr', curr);
+        this.notificationsChangeSubject.next('');
+      } else {
+        console.log('curr', curr);
+        this.notificationsChangeSubject.next(String(curr));
       }
-    })
-    console.log('currrrr', currCount)
+      localStorage.setItem('prevNotificationCount', String(currCount));
+    });
     return currCount;
   }
 
   async updateNotification(id: string, interestedUserID: string) {
     const docRef = doc(this.fStore_, 'petsForAdoption', id);
     await updateDoc(docRef, {
-      notificationID: arrayUnion(interestedUserID),
+      // notificationID: arrayUnion(interestedUserID),
     });
   }
   async addInterestedUserInfo(data: any) {
@@ -223,9 +299,8 @@ export class DatabaseService implements OnInit {
       data
     )
       .then((docRef) => {
-        this.updateNotification(data.petsInfoID, docRef.id);
+        // this.updateNotification(data.petsInfoID, docRef.id);
         this.openSnackBar('Submitted successfully');
-        this.checkForNotificationChange()
         return true;
       })
       .catch((error) => {
@@ -233,5 +308,11 @@ export class DatabaseService implements OnInit {
         console.log(error);
         return false;
       });
+  }
+  getEmail() {
+    getAuth().onAuthStateChanged((user) => {
+      this.currentUserEmail.next(String(user?.email));
+      return user?.email;
+    });
   }
 }

@@ -42,15 +42,23 @@
             "
             src="{{ pets.petPictureURL }}"
           />
-          <div>
-            Adoption status : {{ pets.adopted }}
+          <div class="adoption-status-container">
+            Adoption status :<span> {{ pets.adopted }}</span>
             <button
               mat-raised-button
               class="mat-raised-green-button"
-              disabled="{{ pets.adopted }}"
+              [disabled]="pets.adopted"
               (click)="changeAdoptionStatus(pets.documentID)"
             >
               change status
+            </button>
+            <button
+              mat-raised-button
+              (click)="updatePetsInfo(pets.documentID)"
+              color="primary"
+              disabled="{{ pets.adopted }}"
+            >
+              UPDATE
             </button>
           </div>
         </div>

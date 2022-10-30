@@ -7,6 +7,8 @@
   flex-direction: row;
   justify-content: space-around;
   gap: 50px;
+  margin-bottom: 150px;
+  overflow: scroll;
 }
 .put-for-adoption-main-container {
   position: relative;
@@ -15,7 +17,7 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
-
+  height: fit-content;
   p {
     text-align: center;
     margin-bottom: 10px;
@@ -31,6 +33,7 @@
   min-width: 350px;
   width: 400px;
   height: fit-content;
+  background: white !important;
 
   .mat-form-field {
     width: inherit;
@@ -50,15 +53,14 @@
 }
 
 .put-for-adoption-user-data-container {
-  min-width: 350px;
+  /* min-width: 360px; */
   /* background-color: yellow; */
-  min-height: 500px;
-  height: fit-content;
+  min-height: 350px;
+  height: 680px;
   overflow: scroll;
   padding: 5px;
   display: flex;
   justify-content: center;
-  margin-bottom: 150px;
 }
 
 .radio-button-container {

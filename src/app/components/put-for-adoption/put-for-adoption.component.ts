@@ -25,11 +25,15 @@ import { petsInfo } from 'src/app/model/commonInterfaces';
   styleUrls: ['./put-for-adoption.component.scss'],
 })
 export class PutForAdoptionComponent implements OnInit {
+  date_: any;
+  currDate?: any;
+  currentUserUID?: any;
   dogOrCatObject = [
     { value: 'dog', checked: true },
     { value: 'cat', checked: false },
   ];
   checkedRadioButton = this.dogOrCatObject[0].value;
+  isUploadingImageText: string = '';
   // fetchedPetsData: petsInfo[] = [];
   allPetsData: any;
   fetchedPetsData: petsInfo[] = [];
@@ -55,11 +59,12 @@ export class PutForAdoptionComponent implements OnInit {
   @ViewChild('tagInput') tagInput!: ElementRef<HTMLInputElement>;
 
   isSpinnerLoading: boolean = false;
-  myData: any;
   selectedFile?: File;
+  updateDocumentID: any;
   fb: any;
   downloadURL?: Observable<string>;
   disable: boolean = false;
+  updateButtonVisible: boolean = false;
   constructor(
     private _snackBar: MatSnackBar,
     private database: DatabaseService,
@@ -73,24 +78,30 @@ export class PutForAdoptionComponent implements OnInit {
     );
   }
   ngOnInit(): void {
-    this.allPetsData = this.database.allPutForAdoptionPetsData.subscribe(
+    this.database.fetchAllPetsForUser()
+    this.currentUserUID = localStorage.getItem('uid')
+    this.date_ = new Date()
+    this.currDate = this.date_.getFullYear() + "-" + this.date_.getMonth() + "-" + this.date_.getDate() + " " + this.date_.getHours() + ":" + this.date_.getMinutes() + ":" + this.date_.getSeconds()
+    // this.fetchAllPetsData();
+    this.database.allPutForAdoptionPetsData.subscribe(
       (value) => {
-        return value;
+        console.log("this is the data", value)
+        this.allPetsData = value
+        // return value;
       }
     );
-
   }
 
-  fetchAllPetsData() {
-    this.fetchedPetsData = [];
-    this.database.fetchAllPetsForUser();
-    this.database.fetchAllPetsForUser().then((value) => {
-      this.fetchedPetsData.push(...(<[]>value));
-    });
-  }
-  year: string[] = ['none', '0', '1', '2', '3', '5', '6', '7', '8', '9', '10'];
+  // fetchAllPetsData() {
+  //   this.fetchedPetsData = [];
+  //   this.database.fetchAllPetsForUser();
+  //   this.database.fetchAllPetsForUser().then((value) => {
+  //     // { }
+  //     // this.fetchedPetsData.push(...(<[]>value));
+  //   });
+  // }
+  year: string[] = ['0', '1', '2', '3', '5', '6', '7', '8', '9', '10'];
   month: string[] = [
-    'none',
     '0',
     '1',
     '2',
@@ -109,7 +120,6 @@ export class PutForAdoptionComponent implements OnInit {
   selectedYear: string = '0';
   selectedMonth: string = '0';
   selectedSpayedNeuter: string = 'none';
-  currDate: any = new Date();
   ownerName = new FormControl('', [Validators.required]);
   phoneNumber = new FormControl('', [
     Validators.required,
@@ -119,31 +129,39 @@ export class PutForAdoptionComponent implements OnInit {
   ]);
 
   petPicture = new FormControl('', [Validators.required]);
-  additionalTags = new FormControl(this.tags);
-
   putForAdoptionPetInfo = new FormGroup({
-    id: new FormControl(localStorage.getItem('uid'), []),
     ownerName: this.ownerName,
     phoneNumber: this.phoneNumber,
     catOrDog: new FormControl(this.checkedRadioButton, []),
     ageInYear: new FormControl(this.selectedYear, []),
     ageInMonth: new FormControl(this.selectedMonth, []),
-    isSpayedNeuter: new FormControl(this.selectedSpayedNeuter, []),
-    searchTags: this.additionalTags,
-    date: new FormControl(
-      String(
-        this.currDate.getDate() +
-        '-' +
-        this.currDate.getMonth() +
-        '-' +
-        this.currDate.getFullYear()
-      )
-    ),
-    petPicture: this.petPicture,
-    notificationID: new FormGroup([], []),
+    searchTags: new FormControl(this.tags, []),
+    petPictureURL: this.petPicture,
   });
 
+  updatePetsInfo(data: any) {
+    this.date_ = new Date();
+    this.currDate = this.date_.getFullYear() + "-" + this.date_.getMonth() + "-" + this.date_.getDate() + " " + this.date_.getHours() + ":" + this.date_.getMinutes() + ":" + this.date_.getSeconds()
+    console.log("parent", data.searchTags)
+    this.clearForm();
+    this.updateDocumentID = data.documentID;
+    this.updateButtonVisible = true;
+    this.tags = [];
+    console.log('from child', data);
+    for (let i = 0; i < data.searchTags.length; i++) {
+      this.tags.push(data.searchTags[i]);
+    }
+    this.putForAdoptionPetInfo.patchValue({
+      ageInYear: data.ageInYear,
+      ageInMonth: data.ageInMonth,
+      phoneNumber: data.phoneNumber,
+      catOrDog: data.catOrDog,
+      ownerName: data.ownerName,
+    });
+    // this.putForAdoptionPetInfo.setValue(data)
+  }
   onFileSelected(event: any) {
+    this.isUploadingImageText = 'uploading image...';
     this.isSpinnerLoading = true;
     this.disable = false;
     let imageId = `${new Date().getDate()}${new Date().getHours()}${new Date().getSeconds()}${new Date().getMilliseconds()}`;
@@ -163,6 +181,7 @@ export class PutForAdoptionComponent implements OnInit {
             }
             this.isSpinnerLoading = false;
             this.disable = true;
+            this.isUploadingImageText = '';
           });
         })
       )
@@ -182,17 +201,35 @@ export class PutForAdoptionComponent implements OnInit {
     return true;
   }
   putForAdoption(petInfo: any) {
+    console.log("final", petInfo)
+    console.log("final", this.tags)
+
     this.isSpinnerLoading = true;
     let docRef;
     this.downloadURL?.subscribe((value) => {
       if (value) {
-        Object.assign(petInfo, { petPicture: this.fb });
-        docRef = this.database.addPetForAdoption(petInfo);
-        this.isSpinnerLoading = false;
-        this.clearForm();
-        this.tags = [];
+        Object.assign(petInfo, { petPictureURL: this.fb });
+        Object.assign(petInfo, { documentID: this.updateDocumentID });
+        Object.assign(petInfo, { date: this.currDate })
+        Object.assign(petInfo, { searchTags: this.tags })
+        Object.assign(petInfo, { uid: localStorage.getItem('uid') })
+        if (this.updateButtonVisible) {
+          console.log(petInfo)
+          docRef = this.database.updatePetsInfo(petInfo, this.updateDocumentID);
+          console.log('update');
+          this.isSpinnerLoading = false;
+          this.clearForm();
+          this.tags = [];
+          this.updateButtonVisible = false;
+        } else {
+          docRef = this.database.addPetForAdoption(petInfo);
+          console.log('add');
+          this.isSpinnerLoading = false;
+          this.clearForm();
+          this.tags = [];
+        }
         if (Boolean(docRef)) {
-          this.fetchAllPetsData();
+          // this.fetchAllPetsData();
         }
       }
     });
@@ -200,11 +237,23 @@ export class PutForAdoptionComponent implements OnInit {
 
   changeAdoptionStatus(data: any) {
     this.database.updateAdoptionStatus(data.id, data.adopted).then((value) => {
-      this.fetchAllPetsData();
+      // this.fetchAllPetsData();
     });
   }
+
+
+  reset() {
+    this.updateButtonVisible = false;
+    this.tags = []
+  }
   clearForm() {
-    this.putForAdoptionPetInfo.reset();
+    this.putForAdoptionPetInfo.reset()
+    this.putForAdoptionPetInfo.patchValue({
+      ownerName: '',
+      phoneNumber: '',
+      ageInYear: '0',
+      ageInMonth: '0',
+    });
     this.ownerName.setErrors(null);
     this.phoneNumber.setErrors(null);
   }
@@ -220,6 +269,7 @@ export class PutForAdoptionComponent implements OnInit {
       this.tags.push(value);
     }
 
+    console.log("our tags", this.tags)
     // Clear the input value
     event.chipInput!.clear();
 

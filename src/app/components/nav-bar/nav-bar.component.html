@@ -1,4 +1,4 @@
-<mat-toolbar class="toolbar-container" style="background: white">
+<mat-toolbar class="toolbar-container">
   <button mat-icon-button (click)="toggleSideNav()">
     <mat-icon>menu</mat-icon>
   </button>
@@ -45,11 +45,17 @@
     [(opened)]="opened"
   >
     <ul>
+      <a class="user-email" *ngIf="isUserLoggedIn"
+        ><li>
+          <fa-icon [icon]="faUser"></fa-icon>
+          <div>{{ email }}</div>
+        </li></a
+      >
       <a routerLink="/home"
         ><li (click)="toggleSideNav()">
           <fa-icon [icon]="faHouseChimneyWindow"></fa-icon>Home
-        </li></a
-      >
+        </li>
+      </a>
       <a routerLink="/about-us"
         ><li (click)="toggleSideNav()">
           <fa-icon [icon]="faUsers"></fa-icon>About us

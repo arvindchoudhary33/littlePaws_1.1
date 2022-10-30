@@ -5,9 +5,13 @@
     class="catOrDogRadioFilter"
     (change)="getAllData([], catOrDogRadioFilter)"
   >
-    <mat-radio-button value="dog"> Dog </mat-radio-button>
+    <mat-radio-button (click)="radioButtonClick()" value="dog">
+      Dog
+    </mat-radio-button>
 
-    <mat-radio-button value="cat"> Cat </mat-radio-button>
+    <mat-radio-button value="cat" (click)="radioButtonClick()">
+      Cat
+    </mat-radio-button>
   </mat-radio-group>
   <mat-form-field class="search-tag-input">
     <mat-label>Filter by tags...</mat-label>
@@ -34,12 +38,16 @@
     <div class="all-pets-cards-container">
       <div *ngFor="let pets of allPets; let i = index">
         <div class="all-pets-single-card">
-          <img [src]="pets.petPictureURL" class="all-pets-card-image" />
+          <div class="imageContainer">
+            <img [src]="pets.petPictureURL" class="all-pets-card-image" />
+          </div>
           <div class="all-pets-card-info">
             <span class="question">On littlePaws from :</span
             ><span class="answer"> {{ pets.date }}</span>
             <span class="question">Age :</span
-            ><span class="answer"> {{ pets.age }}</span>
+            ><span class="answer">
+              Year : {{ pets.ageInYear }} Month : {{ pets.ageInMonth }}
+            </span>
             <button
               mat-raised-button
               class="all-pets-card-button"

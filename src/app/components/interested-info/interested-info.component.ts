@@ -3,6 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from 'src/app/shared/common.service';
 import { DatabaseService } from 'src/app/shared/database.service';
+import {
+  Timestamp
+} from 'firebase/firestore';
 
 @Component({
   selector: 'app-interested-info',
@@ -10,8 +13,11 @@ import { DatabaseService } from 'src/app/shared/database.service';
   styleUrls: ['./interested-info.component.scss'],
 })
 export class InterestedInfoComponent implements OnInit {
+  date_: any;
+  currDate: any;
   isLoading: boolean = false;
   interestedPetInfo: any = {};
+  checkSameUserAdoption: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private database: DatabaseService,
@@ -21,6 +27,9 @@ export class InterestedInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.interestedPetInfo = JSON.parse(this.common.getInterestedPetsInfo());
+    if (this.interestedPetInfo.uid == localStorage.getItem('uid')) {
+      this.checkSameUserAdoption = true;
+    }
 
     if (this.interestedPetInfo == null) {
       console.log('please select a pet ');
@@ -47,7 +56,6 @@ export class InterestedInfoComponent implements OnInit {
   landmark = new FormControl('', [Validators.required]);
   city = new FormControl('', [Validators.required]);
   query = new FormControl('', [Validators.required]);
-  currDate = new Date();
   // petsInfoID = new FormControl(this.interestedPetInfo.documentID, [])
   userInfoFormGroup = new FormGroup({
     name: this.name,
@@ -55,19 +63,17 @@ export class InterestedInfoComponent implements OnInit {
     landmark: this.landmark,
     city: this.city,
     query: this.query,
-    date: new FormControl(
-      String(
-        this.currDate.getDate() +
-        '-' +
-        this.currDate.getMonth() +
-        '-' +
-        this.currDate.getFullYear()
-      )
-    ),
   });
 
   clearForm() {
-    this.userInfoFormGroup.reset();
+    this.userInfoFormGroup.patchValue({
+      name: '',
+      phoneNumber: '',
+      landmark: '',
+      city: '',
+      query: '',
+    })
+
     this.name.setErrors(null);
     this.phoneNumber.setErrors(null);
     this.city.setErrors(null);
@@ -75,13 +81,18 @@ export class InterestedInfoComponent implements OnInit {
     this.query.setErrors(null);
   }
   submitUserInfo(data: any) {
+
+    this.date_ = new Date();
+    this.currDate = this.date_.getFullYear() + "-" + this.date_.getMonth() + "-" + this.date_.getDate() + " " + this.date_.getHours() + ":" + this.date_.getMinutes() + ":" + this.date_.getSeconds()
+    console.log("interested", data)
     Object.assign(data, { petsInfoID: this.interestedPetInfo.documentID });
     Object.assign(data, { petsOwnerID: this.interestedPetInfo.uid });
     Object.assign(data, {
       petPictureURL: this.interestedPetInfo.petPictureURL,
     });
+    Object.assign(data, { date: this.currDate })
     this.isLoading = true;
-    this.userInfoFormGroup.invalid
+    this.userInfoFormGroup.invalid;
     this.database.addInterestedUserInfo(data).then((value) => {
       this.isLoading = Boolean(value);
       this.clearForm();
