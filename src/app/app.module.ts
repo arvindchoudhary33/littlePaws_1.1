@@ -53,6 +53,7 @@ import { PetInfoComponent } from './components/put-for-adoption/child/pet-info/p
 import { MoreInfoComponent } from './components/all-pets/child/more-info/more-info.component';
 import { NotificationComponent } from './components/all-pets/child/notification/notification.component';
 import { InterestedInfoComponent } from './components/interested-info/interested-info.component';
+import { StatusConfirmationComponent } from './components/put-for-adoption/child/status-confirmation/status-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { InterestedInfoComponent } from './components/interested-info/interested
     MoreInfoComponent,
     NotificationComponent,
     InterestedInfoComponent,
+    StatusConfirmationComponent,
   ],
   entryComponents: [SignUpComponent, LoginComponent, MoreInfoComponent],
   imports: [
